@@ -19,20 +19,25 @@
   </script>
 </head>
 <body>
-<a class="skip" href="#top">Məzmuna keç</a>
+<a class="skip" href="#top" data-i18n="skip">Məzmuna keç</a>
 
 <header class="top" id="siteHeader">
   <div class="wrap">
     <a class="logo" href="#top">Armudu <span>çay evi</span></a>
     <nav aria-label="Əsas naviqasiya">
       <ul>
-        <li><a href="#hekaye">Hekayə</a></li>
-        <li><a href="#menyu">Menyu</a></li>
-        <li><a href="#tedbirler">Tədbirlər</a></li>
-        <li><a href="#rezerv">Rezerv</a></li>
+        <li><a href="#hekaye" data-i18n="nav.story">Hekayə</a></li>
+        <li><a href="#menyu" data-i18n="nav.menu">Menyu</a></li>
+        <li><a href="#tedbirler" data-i18n="nav.events">Tədbirlər</a></li>
+        <li><a href="#rezerv" data-i18n="nav.reserve">Rezerv</a></li>
       </ul>
     </nav>
-    <button class="theme-toggle" id="themeToggle" type="button" aria-label="İşıq/qaranlıq rejimi" aria-pressed="false">
+    <div class="lang" role="group" aria-label="Dil / Language / Язык">
+      <button type="button" data-lang="az" aria-pressed="true">AZ</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button" data-i18n-aria="a11y.theme" aria-label="İşıq/qaranlıq rejimi" aria-pressed="false">
       <svg class="ic-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></g></svg>
       <svg class="ic-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5z" fill="currentColor"/></svg>
     </button>
@@ -43,17 +48,17 @@
   <div class="hero">
     <div class="wrap">
       <div>
-        <div class="eyebrow">İçərişəhər · 1998-dən bəri</div>
-        <h1>Çay tələsik içilmir. <em>Dəmini alır.</em></h1>
-        <p class="lede">Lənkəran yarpağı, samovar suyu, nazik belli armudu stəkan. Yanında ağ gilas mürəbbəsi və bir az da söhbət. Qapımız hər axşam gecə yarısına qədər açıqdır.</p>
+        <div class="eyebrow" data-i18n="hero.eyebrow">İçərişəhər · 1998-dən bəri</div>
+        <h1 data-i18n-html="hero.title">Çay tələsik içilmir. <em>Dəmini alır.</em></h1>
+        <p class="lede" data-i18n="hero.lede">Lənkəran yarpağı, samovar suyu, nazik belli armudu stəkan. Yanında ağ gilas mürəbbəsi və bir az da söhbət. Qapımız hər axşam gecə yarısına qədər açıqdır.</p>
         <div class="hero-actions">
-          <a class="btn" href="#rezerv">Masa ayır</a>
-          <a class="btn ghost" href="#demle">Evdə dəmlə</a>
+          <a class="btn" href="#rezerv" data-i18n="hero.reserve">Masa ayır</a>
+          <a class="btn ghost" href="#demle" data-i18n="hero.brew">Evdə dəmlə</a>
         </div>
         <div class="facts">
-          <div><b>5 dəq</b><small>dəmləmə müddəti</small></div>
-          <div><b>95 °C</b><small>samovar suyu</small></div>
-          <div><b id="jamCount">6</b><small>növ mürəbbə</small></div>
+          <div><b data-i18n="facts.brew">5 dəq</b><small data-i18n="facts.brewLabel">dəmləmə müddəti</small></div>
+          <div><b data-i18n="facts.temp">95 °C</b><small data-i18n="facts.tempLabel">samovar suyu</small></div>
+          <div><b id="jamCount">6</b><small data-i18n="facts.jamLabel">növ mürəbbə</small></div>
         </div>
       </div>
       <div class="glass-stage" aria-hidden="true">
@@ -81,16 +86,16 @@
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <div class="eyebrow">Bizim hekayə</div>
-          <h2>Bir samovarla başladı</h2>
+          <div class="eyebrow" data-i18n="story.eyebrow">Bizim hekayə</div>
+          <h2 data-i18n="story.h2">Bir samovarla başladı</h2>
         </div>
-        <p>İçərişəhərin dar döngəsində, eyni samovarın başında dörddən çox nəsil çay içib. Hekayəmiz qısadır, amma dəmi uzun.</p>
+        <p data-i18n="story.p">İçərişəhərin dar döngəsində, eyni samovarın başında dörddən çox nəsil çay içib. Hekayəmiz qısadır, amma dəmi uzun.</p>
       </div>
       <ol class="timeline">
-        <li><span class="yr">1998</span><div><h3>Qapı açılır</h3><p>Baba Kərim samovarını Kiçik Qala küçəsinə gətirir, ilk stəkan çay süzülür.</p></div></li>
-        <li><span class="yr">2008</span><div><h3>Həyət masaları</h3><p>Tut ağacının altına ilk masalar qoyulur; yay axşamları dolub-daşır.</p></div></li>
-        <li><span class="yr">2016</span><div><h3>Mürəbbə rəfi</h3><p>Ailə reseptləri ilə on iki növ mürəbbə rəfə düzülür, hər çaya bir cüt.</p></div></li>
-        <li><span class="yr">bugün</span><div><h3>Onlayn qapı</h3><p>Masanı evdən ayırırsan, çayın dəmini biz tuturuq.</p></div></li>
+        <li><span class="yr">1998</span><div><h3 data-i18n="story.1.h">Qapı açılır</h3><p data-i18n="story.1.p">Baba Kərim samovarını Kiçik Qala küçəsinə gətirir, ilk stəkan çay süzülür.</p></div></li>
+        <li><span class="yr">2008</span><div><h3 data-i18n="story.2.h">Həyət masaları</h3><p data-i18n="story.2.p">Tut ağacının altına ilk masalar qoyulur; yay axşamları dolub-daşır.</p></div></li>
+        <li><span class="yr">2016</span><div><h3 data-i18n="story.3.h">Mürəbbə rəfi</h3><p data-i18n="story.3.p">Ailə reseptləri ilə on iki növ mürəbbə rəfə düzülür, hər çaya bir cüt.</p></div></li>
+        <li><span class="yr" data-i18n="story.4.yr">bugün</span><div><h3 data-i18n="story.4.h">Onlayn qapı</h3><p data-i18n="story.4.p">Masanı evdən ayırırsan, çayın dəmini biz tuturuq.</p></div></li>
       </ol>
     </div>
   </section>
@@ -99,17 +104,17 @@
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <div class="eyebrow">Menyu</div>
-          <h2>Bu axşam samovarda</h2>
+          <div class="eyebrow" data-i18n="menu.eyebrow">Menyu</div>
+          <h2 data-i18n="menu.h2">Bu axşam samovarda</h2>
         </div>
         <div class="chips" role="group" aria-label="Menyunu süz">
-          <button class="chip" data-f="" aria-pressed="true">Hamısı</button>
-          <button class="chip" data-f="CAY" aria-pressed="false">Çay</button>
-          <button class="chip" data-f="SIRIN" aria-pressed="false">Şirniyyat</button>
-          <button class="chip" data-f="DEST" aria-pressed="false">Dəstlər</button>
+          <button class="chip" data-f="" aria-pressed="true" data-i18n="chip.all">Hamısı</button>
+          <button class="chip" data-f="CAY" aria-pressed="false" data-i18n="chip.tea">Çay</button>
+          <button class="chip" data-f="SIRIN" aria-pressed="false" data-i18n="chip.sweets">Şirniyyat</button>
+          <button class="chip" data-f="DEST" aria-pressed="false" data-i18n="chip.sets">Dəstlər</button>
         </div>
       </div>
-      <div class="menu" id="menu"><p class="muted">Menyu yüklənir…</p></div>
+      <div class="menu" id="menu"><p class="muted" data-i18n="menu.loading">Menyu yüklənir…</p></div>
     </div>
   </section>
 
@@ -117,32 +122,32 @@
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <div class="eyebrow">Evdə dəmlə</div>
-          <h2>Dəmləmə saatı</h2>
+          <div class="eyebrow" data-i18n="brew.eyebrow">Evdə dəmlə</div>
+          <h2 data-i18n="brew.h2">Dəmləmə saatı</h2>
         </div>
-        <p>Çaynikə su tökün, saatı işə salın. Hər mərhələ vaxtı gələndə yanacaq. Menyudan bir çay seçsən, müddətini özü qoyur.</p>
+        <p data-i18n="brew.p">Çaynikə su tökün, saatı işə salın. Hər mərhələ vaxtı gələndə yanacaq. Menyudan bir çay seçsən, müddətini özü qoyur.</p>
       </div>
       <div class="brew">
         <div class="ring" id="ring">
           <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="52" stroke-width="6"/><circle class="prog" id="prog" cx="60" cy="60" r="52" stroke-width="6"/></svg>
-          <div class="read"><b id="clock">5:00</b><small id="phase">hazırdır</small></div>
+          <div class="read"><b id="clock">5:00</b><small id="phase" data-i18n="phase.ready">hazırdır</small></div>
         </div>
         <div>
           <ol class="steps" id="steps">
-            <li data-at="0">Çaynikı qaynar su ilə yaxalayın, isinsin.</li>
-            <li data-at="0.08">Hər stəkana bir çay qaşığı yarpaq tökün, üstünə 95 °C su əlavə edin.</li>
-            <li data-at="0.4">Çaynikı samovarın üstünə qoyun, qapağını dəsmalla örtün.</li>
-            <li data-at="0.8">Yarpaqlar dibə çökür. Bir dəfə yavaşca fırladın.</li>
-            <li data-at="1">Dəm hazırdır. Stəkanın üçdə birinə dəm, qalanına su.</li>
+            <li data-at="0" data-i18n="step.1">Çaynikı qaynar su ilə yaxalayın, isinsin.</li>
+            <li data-at="0.08" data-i18n="step.2">Hər stəkana bir çay qaşığı yarpaq tökün, üstünə 95 °C su əlavə edin.</li>
+            <li data-at="0.4" data-i18n="step.3">Çaynikı samovarın üstünə qoyun, qapağını dəsmalla örtün.</li>
+            <li data-at="0.8" data-i18n="step.4">Yarpaqlar dibə çökür. Bir dəfə yavaşca fırladın.</li>
+            <li data-at="1" data-i18n="step.5">Dəm hazırdır. Stəkanın üçdə birinə dəm, qalanına su.</li>
           </ol>
           <div class="timer-ctrls">
-            <button class="btn" id="startBtn" type="button">Başla</button>
-            <button class="btn ghost" id="resetBtn" type="button">Sıfırla</button>
-            <label for="brewLen">Müddət
+            <button class="btn" id="startBtn" type="button" data-i18n="brew.start">Başla</button>
+            <button class="btn ghost" id="resetBtn" type="button" data-i18n="brew.reset">Sıfırla</button>
+            <label for="brewLen"><span data-i18n="brew.len">Müddət</span>
               <select id="brewLen">
-                <option value="180">3 dəq · yüngül</option>
-                <option value="300" selected>5 dəq · klassik</option>
-                <option value="420">7 dəq · tünd</option>
+                <option value="180" data-i18n="len.light">3 dəq · yüngül</option>
+                <option value="300" selected data-i18n="len.classic">5 dəq · klassik</option>
+                <option value="420" data-i18n="len.strong">7 dəq · tünd</option>
               </select>
             </label>
           </div>
@@ -155,10 +160,10 @@
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <div class="eyebrow">Yanında nə olsun?</div>
-          <h2>Mürəbbə rəfi</h2>
+          <div class="eyebrow" data-i18n="jam.eyebrow">Yanında nə olsun?</div>
+          <h2 data-i18n="jam.h2">Mürəbbə rəfi</h2>
         </div>
-        <p>Bir kavanoz seçin, ona uyğun çayı biz deyək.</p>
+        <p data-i18n="jam.p">Bir kavanoz seçin, ona uyğun çayı biz deyək.</p>
       </div>
       <div class="jams" id="jams"></div>
       <div class="pairing" id="pairing" aria-live="polite"></div>
@@ -169,29 +174,29 @@
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <div class="eyebrow">Tədbirlər</div>
-          <h2>Axşamın öz ritmi var</h2>
+          <div class="eyebrow" data-i18n="ev.eyebrow">Tədbirlər</div>
+          <h2 data-i18n="ev.h2">Axşamın öz ritmi var</h2>
         </div>
-        <p>Həftə boyu çay süfrəsinin ətrafında kiçik tədbirlər. Masa ayırıb qoşulun.</p>
+        <p data-i18n="ev.p">Həftə boyu çay süfrəsinin ətrafında kiçik tədbirlər. Masa ayırıb qoşulun.</p>
       </div>
       <div class="events">
         <article class="event">
-          <span class="when">Hər çərşənbə · 19:00</span>
-          <h3>Nərd gecələri</h3>
-          <p>Taxta açılır, çay dəmlənir. Qalib növbəti dəmi udur.</p>
-          <a class="arrow" href="#rezerv">Masa ayır →</a>
+          <span class="when" data-i18n="ev.1.when">Hər çərşənbə · 19:00</span>
+          <h3 data-i18n="ev.1.h">Nərd gecələri</h3>
+          <p data-i18n="ev.1.p">Taxta açılır, çay dəmlənir. Qalib növbəti dəmi udur.</p>
+          <a class="arrow" href="#rezerv" data-i18n="ev.cta">Masa ayır →</a>
         </article>
         <article class="event">
-          <span class="when">Cümə axşamı · 20:30</span>
-          <h3>Canlı muğam</h3>
-          <p>Tar və kamança həyətdə. Stəkan isti, hava sərin.</p>
-          <a class="arrow" href="#rezerv">Masa ayır →</a>
+          <span class="when" data-i18n="ev.2.when">Cümə axşamı · 20:30</span>
+          <h3 data-i18n="ev.2.h">Canlı muğam</h3>
+          <p data-i18n="ev.2.p">Tar və kamança həyətdə. Stəkan isti, hava sərin.</p>
+          <a class="arrow" href="#rezerv" data-i18n="ev.cta">Masa ayır →</a>
         </article>
         <article class="event">
-          <span class="when">Mart · Novruz həftəsi</span>
-          <h3>Novruz süfrəsi</h3>
-          <p>Səməni, şəkərbura, paxlava və xüsusi dəmləmə.</p>
-          <a class="arrow" href="#rezerv">Masa ayır →</a>
+          <span class="when" data-i18n="ev.3.when">Mart · Novruz həftəsi</span>
+          <h3 data-i18n="ev.3.h">Novruz süfrəsi</h3>
+          <p data-i18n="ev.3.p">Səməni, şəkərbura, paxlava və xüsusi dəmləmə.</p>
+          <a class="arrow" href="#rezerv" data-i18n="ev.cta">Masa ayır →</a>
         </article>
       </div>
     </div>
@@ -201,22 +206,22 @@
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <div class="eyebrow">Rəylər</div>
-          <h2>Qonaqlar nə deyir</h2>
+          <div class="eyebrow" data-i18n="rev.eyebrow">Rəylər</div>
+          <h2 data-i18n="rev.h2">Qonaqlar nə deyir</h2>
         </div>
       </div>
       <div class="reviews">
         <figure class="review">
-          <blockquote>Çayın dadından çox, dəmlənmə səbrini sevdim. Tələsmirlər, bu da hiss olunur.</blockquote>
-          <figcaption>Nərgiz A. <span>· mart 2026</span></figcaption>
+          <blockquote data-i18n="rev.1.q">Çayın dadından çox, dəmlənmə səbrini sevdim. Tələsmirlər, bu da hiss olunur.</blockquote>
+          <figcaption data-i18n-html="rev.1.by">Nərgiz A. <span>· mart 2026</span></figcaption>
         </figure>
         <figure class="review">
-          <blockquote>Ağ gilas mürəbbəsi ilə Lənkəran çayı — uşaqlığıma qayıtdım. Həyət masası ayrıca ləzzət.</blockquote>
-          <figcaption>Rəşad M. <span>· fevral 2026</span></figcaption>
+          <blockquote data-i18n="rev.2.q">Ağ gilas mürəbbəsi ilə Lənkəran çayı — uşaqlığıma qayıtdım. Həyət masası ayrıca ləzzət.</blockquote>
+          <figcaption data-i18n-html="rev.2.by">Rəşad M. <span>· fevral 2026</span></figcaption>
         </figure>
         <figure class="review">
-          <blockquote>Turist kimi gəldim, qonşu kimi getdim. Samovarın başında vaxt başqa cür keçir.</blockquote>
-          <figcaption>Anna K. <span>· yanvar 2026</span></figcaption>
+          <blockquote data-i18n="rev.3.q">Turist kimi gəldim, qonşu kimi getdim. Samovarın başında vaxt başqa cür keçir.</blockquote>
+          <figcaption data-i18n-html="rev.3.by">Anna K. <span>· yanvar 2026</span></figcaption>
         </figure>
       </div>
     </div>
@@ -226,32 +231,32 @@
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <div class="eyebrow">Rezerv</div>
-          <h2>Masanızı ayırın</h2>
+          <div class="eyebrow" data-i18n="res.eyebrow">Rezerv</div>
+          <h2 data-i18n="res.h2">Masanızı ayırın</h2>
         </div>
-        <p>Saat siyahısında hər yarım saat üçün qalan yer sayı görünür.</p>
+        <p data-i18n="res.p">Saat siyahısında hər yarım saat üçün qalan yer sayı görünür.</p>
       </div>
       <div class="reserve">
         <form id="resForm" novalidate>
-          <label>Ad <input id="rName" name="name" required maxlength="80" placeholder="Leyla Məmmədova" autocomplete="name" aria-describedby="err-name"><span class="err" id="err-name" data-for="name"></span></label>
-          <label>Telefon <input id="rPhone" name="phone" required placeholder="+994 50 123 45 67" inputmode="tel" autocomplete="tel" aria-describedby="err-phone"><span class="err" id="err-phone" data-for="phone"></span></label>
-          <label>Tarix <input id="rDate" name="date" type="date" required aria-describedby="err-date"><span class="err" id="err-date" data-for="date"></span></label>
-          <label>Saat <select id="rTime" name="time" aria-describedby="err-time"></select><span class="err" id="err-time" data-for="time"></span></label>
-          <label>Qonaq sayı <select id="rGuests" name="guests" aria-describedby="err-guests"></select><span class="err" id="err-guests" data-for="guests"></span></label>
-          <label>Yer <select id="rSpot" name="spot" aria-describedby="err-spot"></select><span class="err" id="err-spot" data-for="spot"></span></label>
-          <label class="full">Qeyd <textarea id="rNote" name="note" rows="3" maxlength="500" placeholder="Ad günü, nərd taxtası, xüsusi mürəbbə..."></textarea></label>
-          <div class="full"><button class="btn" type="submit" id="resSubmit">Rezervi təsdiqlə</button></div>
+          <label><span data-i18n="f.name">Ad</span> <input id="rName" name="name" required maxlength="80" placeholder="Leyla Məmmədova" autocomplete="name" aria-describedby="err-name"><span class="err" id="err-name" data-for="name"></span></label>
+          <label><span data-i18n="f.phone">Telefon</span> <input id="rPhone" name="phone" required placeholder="+994 50 123 45 67" inputmode="tel" autocomplete="tel" aria-describedby="err-phone"><span class="err" id="err-phone" data-for="phone"></span></label>
+          <label><span data-i18n="f.date">Tarix</span> <input id="rDate" name="date" type="date" required aria-describedby="err-date"><span class="err" id="err-date" data-for="date"></span></label>
+          <label><span data-i18n="f.time">Saat</span> <select id="rTime" name="time" aria-describedby="err-time"></select><span class="err" id="err-time" data-for="time"></span></label>
+          <label><span data-i18n="f.guests">Qonaq sayı</span> <select id="rGuests" name="guests" aria-describedby="err-guests"></select><span class="err" id="err-guests" data-for="guests"></span></label>
+          <label><span data-i18n="f.spot">Yer</span> <select id="rSpot" name="spot" aria-describedby="err-spot"></select><span class="err" id="err-spot" data-for="spot"></span></label>
+          <label class="full"><span data-i18n="f.note">Qeyd</span> <textarea id="rNote" name="note" rows="3" maxlength="500" placeholder="Ad günü, nərd taxtası, xüsusi mürəbbə..."></textarea></label>
+          <div class="full"><button class="btn" type="submit" id="resSubmit" data-i18n="res.submit">Rezervi təsdiqlə</button></div>
           <div class="confirm" id="confirm" hidden aria-live="polite"></div>
         </form>
         <div class="info" id="elaqe">
           <dl>
-            <dt>Ünvan</dt><dd>Kiçik Qala küçəsi 14, İçərişəhər, Bakı</dd>
-            <dt>Bu gün</dt><dd id="todayHours">Hər gün 10:00–00:00</dd>
-            <dt>Telefon</dt><dd>+994 12 000 00 00</dd>
-            <dt>Metro</dt><dd>İçərişəhər, 4 dəqiqəlik piyada</dd>
+            <dt data-i18n="info.addr">Ünvan</dt><dd data-i18n="info.addrV">Kiçik Qala küçəsi 14, İçərişəhər, Bakı</dd>
+            <dt data-i18n="info.today">Bu gün</dt><dd id="todayHours">Hər gün 10:00–00:00</dd>
+            <dt data-i18n="info.phone">Telefon</dt><dd>+994 12 000 00 00</dd>
+            <dt data-i18n="info.metro">Metro</dt><dd data-i18n="info.metroV">İçərişəhər, 4 dəqiqəlik piyada</dd>
           </dl>
-          <p class="note">Novruz həftəsində şəkərbura və paxlava hər axşam təzə bişirilir. 12 nəfərdən böyük qonaqlıqlar üçün bir gün əvvəl zəng edin.</p>
-          <p class="note">Armudu uydurulmuş bir çay evidir; ünvan və telefon nümunədir.</p>
+          <p class="note" data-i18n="note.1">Novruz həftəsində şəkərbura və paxlava hər axşam təzə bişirilir. 12 nəfərdən böyük qonaqlıqlar üçün bir gün əvvəl zəng edin.</p>
+          <p class="note" data-i18n="note.2">Armudu uydurulmuş bir çay evidir; ünvan və telefon nümunədir.</p>
         </div>
       </div>
     </div>
@@ -260,11 +265,12 @@
 
 <footer>
   <div class="wrap">
-    <span>© 2026 Armudu çay evi</span>
-    <span>Çay soyumamış gəlin.</span>
+    <span data-i18n="foot.copy">© 2026 Armudu çay evi</span>
+    <span data-i18n="foot.tag">Çay soyumamış gəlin.</span>
   </div>
 </footer>
 
+<script src="js/i18n.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

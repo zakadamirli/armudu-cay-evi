@@ -1,5 +1,6 @@
 package az.armudu.cayevi.reservation;
 
+import az.armudu.cayevi.i18n.Lang;
 import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/reservations")
@@ -24,18 +26,19 @@ public class ReservationController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ReservationResponse create(@Valid @RequestBody ReservationRequest request) {
-        return ReservationResponse.from(service.create(request));
+    public ReservationResponse create(@Valid @RequestBody ReservationRequest request, Locale locale) {
+        return ReservationResponse.from(service.create(request), Lang.of(locale));
     }
 
     @GetMapping("/{id}")
-    public ReservationResponse get(@PathVariable Long id) {
-        return ReservationResponse.from(service.get(id));
+    public ReservationResponse get(@PathVariable Long id, Locale locale) {
+        return ReservationResponse.from(service.get(id), Lang.of(locale));
     }
 
     @GetMapping
-    public List<ReservationResponse> upcoming() {
-        return service.upcoming().stream().map(ReservationResponse::from).toList();
+    public List<ReservationResponse> upcoming(Locale locale) {
+        String lang = Lang.of(locale);
+        return service.upcoming().stream().map(r -> ReservationResponse.from(r, lang)).toList();
     }
 
     @DeleteMapping("/{id}")
@@ -52,8 +55,9 @@ public class ReservationController {
     }
 
     @GetMapping("/spots")
-    public List<SpotResponse> spots() {
-        return Arrays.stream(Spot.values()).map(s -> new SpotResponse(s, s.getLabel())).toList();
+    public List<SpotResponse> spots(Locale locale) {
+        String lang = Lang.of(locale);
+        return Arrays.stream(Spot.values()).map(s -> new SpotResponse(s, s.label(lang))).toList();
     }
 
     public record SlotResponse(String time, int remaining) {
@@ -64,9 +68,9 @@ public class ReservationController {
 
     public record ReservationResponse(Long id, String name, LocalDate date, String time, int guests,
                                       Spot spot, String spotLabel, String note) {
-        static ReservationResponse from(Reservation r) {
+        static ReservationResponse from(Reservation r, String lang) {
             return new ReservationResponse(r.getId(), r.getName(), r.getVisitDate(), r.getVisitTime().format(HHMM),
-                    r.getGuests(), r.getSpot(), r.getSpot().getLabel(), r.getNote());
+                    r.getGuests(), r.getSpot(), r.getSpot().label(lang), r.getNote());
         }
     }
 }

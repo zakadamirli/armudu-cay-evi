@@ -49,21 +49,20 @@ public class ReservationService {
         LocalTime time = req.time();
         if (time.isBefore(props.openingTime()) || time.isAfter(props.lastSeating())
                 || time.getMinute() % SLOT_MINUTES != 0 || time.getSecond() != 0 || time.getNano() != 0) {
-            throw new ReservationException(HttpStatus.BAD_REQUEST,
-                    "Rezerv " + props.openingTime() + " ilə " + props.lastSeating() + " arasında, yarım saatlıq aralıqlarla mümkündür");
+            throw new ReservationException(HttpStatus.BAD_REQUEST, "reservation.error.timeWindow",
+                    props.openingTime(), props.lastSeating());
         }
         if (req.date().atTime(time).isBefore(LocalDateTime.now())) {
-            throw new ReservationException(HttpStatus.BAD_REQUEST, "Bu saat artıq keçib, başqa saat seçin");
+            throw new ReservationException(HttpStatus.BAD_REQUEST, "reservation.error.pastTime");
         }
         if (req.date().isAfter(LocalDate.now().plusDays(props.maxDaysAhead()))) {
-            throw new ReservationException(HttpStatus.BAD_REQUEST,
-                    "Ən çox " + props.maxDaysAhead() + " gün qabağa rezerv etmək olar");
+            throw new ReservationException(HttpStatus.BAD_REQUEST, "reservation.error.maxDays", props.maxDaysAhead());
         }
         int remaining = props.slotCapacity() - repository.sumGuests(req.date(), time);
         if (req.guests() > remaining) {
-            throw new ReservationException(HttpStatus.CONFLICT, remaining <= 0
-                    ? "Saat " + time + " üçün yer qalmayıb, başqa saat seçin"
-                    : "Saat " + time + " üçün cəmi " + remaining + " yer qalıb");
+            throw remaining <= 0
+                    ? new ReservationException(HttpStatus.CONFLICT, "reservation.error.slotFull", time)
+                    : new ReservationException(HttpStatus.CONFLICT, "reservation.error.slotRemaining", time, remaining);
         }
         String note = req.note() == null || req.note().isBlank() ? null : req.note().trim();
         return repository.save(new Reservation(req.name().trim(), req.phone().trim(), req.date(), time, req.guests(), req.spot(), note));
@@ -72,7 +71,7 @@ public class ReservationService {
     @Transactional(readOnly = true)
     public Reservation get(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new ReservationException(HttpStatus.NOT_FOUND, "Belə rezerv tapılmadı"));
+                .orElseThrow(() -> new ReservationException(HttpStatus.NOT_FOUND, "reservation.error.notFound"));
     }
 
     @Transactional(readOnly = true)
@@ -83,7 +82,7 @@ public class ReservationService {
     @Transactional
     public void cancel(Long id) {
         if (!repository.existsById(id)) {
-            throw new ReservationException(HttpStatus.NOT_FOUND, "Belə rezerv tapılmadı");
+            throw new ReservationException(HttpStatus.NOT_FOUND, "reservation.error.notFound");
         }
         repository.deleteById(id);
     }

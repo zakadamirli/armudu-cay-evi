@@ -7,6 +7,7 @@
 - **Mürəbbə rəfi:** kavanoz seçəndə uyğun çay tövsiyəsi göstərilir.
 - **Masa rezervi:** yarım saatlıq slotlar, hər slotda qonaq tutumu, server tərəfdə yoxlama.
 - **Hekayə, tədbirlər, rəylər** bölmələri; işıq/qaranlıq rejim seçimi.
+- **Üç dil (AZ / EN / RU):** statik mətnlər, menyu/mürəbbə məzmunu və server mesajları `Accept-Language` ilə dilə uyğunlaşır.
 - **Admin panel** (`/admin.html`): gələcək rezervləri gör və ləğv et (giriş tələb olunur).
 
 ## Texnologiyalar

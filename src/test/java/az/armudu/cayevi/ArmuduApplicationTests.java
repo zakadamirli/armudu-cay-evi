@@ -172,6 +172,30 @@ class ArmuduApplicationTests {
                 .andExpect(status().isNotFound());
     }
 
+    // ---------- çoxdillilik ----------
+
+    @Test
+    void menuLocalizedByAcceptLanguage() throws Exception {
+        mvc.perform(get("/api/menu").param("category", "CAY").header("Accept-Language", "en"))
+                .andExpect(jsonPath("$[0].name").value("Lankaran black tea"));
+        mvc.perform(get("/api/menu").param("category", "CAY").header("Accept-Language", "ru"))
+                .andExpect(jsonPath("$[0].name").value("Ланкяранский чёрный чай"));
+        mvc.perform(get("/api/menu").param("category", "CAY"))
+                .andExpect(jsonPath("$[0].name").value("Lənkəran qara çayı"));
+    }
+
+    @Test
+    void errorMessagesLocalized() throws Exception {
+        mvc.perform(postJson(body("Full EN", "18:00", 10)).header("Accept-Language", "en"))
+                .andExpect(status().isCreated());
+        mvc.perform(postJson(body("Over EN", "18:00", 1)).header("Accept-Language", "en"))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message").value(containsString("No seats left")));
+        mvc.perform(postJson(body("Over RU", "18:00", 1)).header("Accept-Language", "ru"))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message").value(containsString("мест")));
+    }
+
     // ---------- təhlükəsizlik ----------
 
     @Test

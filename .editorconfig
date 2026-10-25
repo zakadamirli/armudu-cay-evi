@@ -1,0 +1,11 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# .properties faylları da UTF-8 oxunsun (IntelliJ standart olaraq ISO-8859-1 işlədir)
+[*.properties]
+charset = utf-8

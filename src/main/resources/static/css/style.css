@@ -65,6 +65,11 @@ nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -3px;
 nav a:hover { color: var(--ink); }
 nav a:hover::after, nav a[aria-current="true"]::after { transform: scaleX(1); }
 nav a[aria-current="true"] { color: var(--ink); }
+.lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; flex: none; }
+.lang button { appearance: none; border: 0; background: transparent; color: var(--muted); font: 600 .8rem var(--mono); letter-spacing: .04em; padding: 7px 10px; cursor: pointer; transition: background .15s, color .15s; }
+.lang button + button { border-left: 1px solid var(--line); }
+.lang button:hover { color: var(--ink); }
+.lang button[aria-pressed="true"] { background: var(--tea); color: #fff; }
 .theme-toggle { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; flex: none; transition: border-color .15s, background .15s; }
 .theme-toggle:hover { border-color: var(--muted); }
 .ic-sun { display: none; }

@@ -3,11 +3,36 @@
   const $ = id => document.getElementById(id);
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const root = document.documentElement;
+  const DICT = window.ARMUDU_I18N;
 
-  async function api(path, options) {
-    const res = await fetch(path, { headers: { 'Content-Type': 'application/json' }, ...options });
+  /* ---------- dil ---------- */
+  let lang = 'az';
+  try { const s = localStorage.getItem('armudu-lang'); if (s && DICT[s]) lang = s; } catch { /* keçildi */ }
+  const notePh = {
+    az: 'Ad günü, nərd taxtası, xüsusi mürəbbə...',
+    en: 'Birthday, a backgammon board, a special jam...',
+    ru: 'День рождения, доска для нард, особое варенье...'
+  };
+  function t(key, params) {
+    let s = (DICT[lang] && DICT[lang][key]) ?? (DICT.az[key] ?? key);
+    if (params) for (const k in params) s = s.replaceAll('{' + k + '}', params[k]);
+    return s;
+  }
+
+  function applyStatic() {
+    root.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+    const note = $('rNote'); if (note) note.placeholder = notePh[lang] || notePh.az;
+    document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+  }
+
+  async function api(path, options = {}) {
+    const headers = { 'Content-Type': 'application/json', 'Accept-Language': lang, ...(options.headers || {}) };
+    const res = await fetch(path, { ...options, headers });
     const data = await res.json().catch(() => null);
-    if (!res.ok) throw Object.assign(new Error(data?.message || 'Server cavab vermədi, bir az sonra yenidən yoxlayın'), { data, status: res.status });
+    if (!res.ok) throw Object.assign(new Error(data?.message || t('menu.loadError')), { data, status: res.status });
     return data;
   }
 
@@ -16,29 +41,26 @@
   function applyTheme(mode) {
     if (mode === 'dark' || mode === 'light') root.dataset.theme = mode;
     else delete root.dataset.theme;
-    const dark = root.dataset.theme === 'dark'
-      || (!root.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+    const dark = root.dataset.theme === 'dark' || (!root.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
     toggle.setAttribute('aria-pressed', String(dark));
   }
-  let saved = null;
-  try { saved = localStorage.getItem('armudu-theme'); } catch { /* keçildi */ }
-  applyTheme(saved);
+  let savedTheme = null;
+  try { savedTheme = localStorage.getItem('armudu-theme'); } catch { /* keçildi */ }
+  applyTheme(savedTheme);
   toggle.addEventListener('click', () => {
-    const dark = root.dataset.theme === 'dark'
-      || (!root.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+    const dark = root.dataset.theme === 'dark' || (!root.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
     const next = dark ? 'light' : 'dark';
     applyTheme(next);
     try { localStorage.setItem('armudu-theme', next); } catch { /* keçildi */ }
   });
 
-  /* ---------- scroll-spy naviqasiya ---------- */
+  /* ---------- scroll-spy ---------- */
   const navLinks = [...document.querySelectorAll('nav a')];
   const byId = Object.fromEntries(navLinks.map(a => [a.getAttribute('href').slice(1), a]));
   const spy = new IntersectionObserver(entries => {
     entries.forEach(e => {
       const link = byId[e.target.id];
-      if (!link) return;
-      if (e.isIntersecting) {
+      if (link && e.isIntersecting) {
         navLinks.forEach(a => a.removeAttribute('aria-current'));
         link.setAttribute('aria-current', 'true');
       }
@@ -47,13 +69,12 @@
   Object.keys(byId).forEach(id => { const el = $(id); if (el) spy.observe(el); });
 
   /* ---------- bu gün açıqdır? ---------- */
-  (function hours() {
+  function hours() {
     const el = $('todayHours');
     if (!el) return;
-    const now = new Date(), h = now.getHours();
-    const open = h >= 10 || h < 0; // 10:00–00:00
-    el.textContent = open ? 'İndi açıqdır · 00:00-a qədər' : 'İndi bağlıdır · səhər 10:00-da açılır';
-  })();
+    const h = new Date().getHours();
+    el.textContent = (h >= 10 || h < 0) ? t('hours.open') : t('hours.closed');
+  }
 
   /* ---------- buxar ---------- */
   const cv = $('steam');
@@ -93,18 +114,19 @@
 
   /* ---------- menyu ---------- */
   const menuEl = $('menu');
+  let activeCat = '';
   const price = v => Number(v).toFixed(2).replace('.', ',') + ' ₼';
-  async function loadMenu(category) {
+  async function loadMenu() {
     try {
-      const items = await api('/api/menu' + (category ? '?category=' + category : ''));
+      const items = await api('/api/menu' + (activeCat ? '?category=' + activeCat : ''));
       menuEl.innerHTML = items.map(m => {
         const brew = Number.isInteger(m.brewMinutes)
-          ? `<button class="brew-chip" type="button" data-brew="${m.brewMinutes}" data-tea="${esc(m.name)}">⏱ ${m.brewMinutes} dəq · dəmlə</button>`
+          ? `<button class="brew-chip" type="button" data-brew="${m.brewMinutes}" data-tea="${esc(m.name)}">${esc(t('brew.chip', { n: m.brewMinutes }))}</button>`
           : '';
         return `<div class="item"><h3>${esc(m.name)}${m.tag ? `<span class="tag">${esc(m.tag)}</span>` : ''}</h3><span class="price">${price(m.price)}</span><p>${esc(m.description)}</p>${brew}</div>`;
       }).join('');
     } catch (e) {
-      menuEl.innerHTML = `<p class="muted">Menyunu yükləmək olmadı. ${esc(e.message)}</p>`;
+      menuEl.innerHTML = `<p class="muted">${esc(t('menu.loadError'))}</p>`;
     }
   }
   menuEl.addEventListener('click', e => {
@@ -113,9 +135,9 @@
   });
   document.querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => {
     document.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-    loadMenu(b.dataset.f);
+    activeCat = b.dataset.f;
+    loadMenu();
   }));
-  loadMenu('');
 
   /* ---------- dəmləmə saatı ---------- */
   const ring = $('ring'), prog = $('prog'), clock = $('clock'), phase = $('phase');
@@ -125,6 +147,12 @@
   prog.style.strokeDasharray = C;
   let total = 300, left = 300, timer = null;
   const mmss = s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  function startLabel() {
+    if (timer) return t('brew.stop');
+    if (left === 0) return t('brew.again');
+    if (left === total) return t('brew.start');
+    return t('brew.continue');
+  }
   function draw() {
     const frac = 1 - left / total;
     prog.style.strokeDashoffset = C * (1 - frac);
@@ -132,98 +160,116 @@
     let cur = -1;
     steps.forEach((li, i) => { if (frac >= +li.dataset.at) cur = i; });
     steps.forEach((li, i) => { li.classList.toggle('on', i === cur && (timer || left === 0)); li.classList.toggle('done', i < cur); });
-    phase.textContent = left === 0 ? 'dəm hazırdır' : timer ? 'dəmlənir…' : left === total ? 'hazırdır' : 'fasilə';
+    phase.textContent = left === 0 ? t('phase.done') : timer ? t('phase.brewing') : left === total ? t('phase.ready') : t('phase.rest');
     ring.classList.toggle('done', left === 0);
+    startBtn.textContent = startLabel();
   }
-  function stop() { clearInterval(timer); timer = null; startBtn.textContent = left === total ? 'Başla' : 'Davam et'; }
+  function stop() { clearInterval(timer); timer = null; }
   function finish() {
-    left = 0; stop(); startBtn.textContent = 'Yenidən';
+    left = 0; stop();
     ring.classList.add('pulse');
     setTimeout(() => ring.classList.remove('pulse'), 800);
   }
   startBtn.addEventListener('click', () => {
     if (timer) { stop(); draw(); return; }
     if (left === 0) left = total;
-    startBtn.textContent = 'Dayandır';
-    timer = setInterval(() => { left--; if (left <= 0) { finish(); } draw(); }, 1000);
+    timer = setInterval(() => { left--; if (left <= 0) finish(); draw(); }, 1000);
     draw();
   });
-  $('resetBtn').addEventListener('click', () => { stop(); left = total; startBtn.textContent = 'Başla'; draw(); });
-  lenSel.addEventListener('change', () => { stop(); total = left = +lenSel.value; startBtn.textContent = 'Başla'; draw(); });
+  $('resetBtn').addEventListener('click', () => { stop(); left = total; draw(); });
+  lenSel.addEventListener('change', () => { stop(); total = left = +lenSel.value; draw(); });
 
   function setBrew(minutes, teaName) {
     if (!Number.isInteger(minutes) || minutes <= 0) return;
     stop();
     total = left = minutes * 60;
     const val = String(total);
-    if (![...lenSel.options].some(o => o.value === val)) {
-      lenSel.add(new Option(`${minutes} dəq · ${teaName}`, val));
-    }
+    let opt = [...lenSel.options].find(o => o.value === val);
+    if (!opt) { opt = new Option('', val); lenSel.add(opt); }
+    opt.textContent = t('brew.lenCustom', { n: minutes, name: teaName });
+    opt.dataset.custom = '1';
     lenSel.value = val;
-    startBtn.textContent = 'Başla';
     ring.classList.remove('done');
     draw();
     $('demle').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
     startBtn.focus({ preventScroll: true });
   }
-  draw();
 
   /* ---------- mürəbbə ---------- */
   const jamsEl = $('jams'), pairEl = $('pairing');
-  let jams = [];
+  let jams = [], pickedJam = 0;
+  function renderPairing() {
+    if (!jams.length) return;
+    pairEl.innerHTML = `<strong>${esc(t('jam.pairing', { name: jams[pickedJam].name }))}</strong> ${esc(jams[pickedJam].pairing)}`;
+  }
   function pick(i) {
+    pickedJam = i;
     jamsEl.querySelectorAll('.jam').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.i === i)));
-    pairEl.innerHTML = `<strong>${esc(jams[i].name)} mürəbbəsi:</strong> ${esc(jams[i].pairing)}`;
+    renderPairing();
   }
   jamsEl.addEventListener('click', e => { const b = e.target.closest('.jam'); if (b) pick(+b.dataset.i); });
-  api('/api/jams').then(list => {
-    jams = list;
-    $('jamCount').textContent = list.length;
-    jamsEl.innerHTML = list.map((j, i) =>
-      `<button class="jam" data-i="${i}" aria-pressed="false"><span class="jar"></span><b>${esc(j.name)}</b><small>${esc(j.description)}</small></button>`).join('');
-    // Rəngləri CSSOM ilə təyin et (CSP inline style atributlarını bloklayır)
-    list.forEach((j, i) => {
-      const jar = jamsEl.querySelector(`.jam[data-i="${i}"] .jar`);
-      if (jar) jar.style.background = /^#[0-9a-f]{6}$/i.test(j.color) ? j.color : '#999';
-    });
-    if (list.length) pick(0);
-  }).catch(e => { pairEl.textContent = 'Mürəbbə rəfini yükləmək olmadı. ' + e.message; });
+  async function loadJams() {
+    try {
+      jams = await api('/api/jams');
+      $('jamCount').textContent = jams.length;
+      jamsEl.innerHTML = jams.map((j, i) =>
+        `<button class="jam" data-i="${i}" aria-pressed="${i === pickedJam}"><span class="jar"></span><b>${esc(j.name)}</b><small>${esc(j.description)}</small></button>`).join('');
+      jams.forEach((j, i) => {
+        const jar = jamsEl.querySelector(`.jam[data-i="${i}"] .jar`);
+        if (jar) jar.style.background = /^#[0-9a-f]{6}$/i.test(j.color) ? j.color : '#999';
+      });
+      if (pickedJam >= jams.length) pickedJam = 0;
+      renderPairing();
+    } catch (e) {
+      pairEl.textContent = t('jam.loadError');
+    }
+  }
 
   /* ---------- rezerv ---------- */
   const form = $('resForm'), conf = $('confirm'), tSel = $('rTime'), gSel = $('rGuests'), dIn = $('rDate'), spotSel = $('rSpot'), submit = $('resSubmit');
-  const months = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avqust', 'sentyabr', 'oktyabr', 'noyabr', 'dekabr'];
   const localIso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
-  for (let g = 1; g <= 12; g++) gSel.add(new Option(g + ' nəfər', g));
-  gSel.value = '2';
+  function fillGuests() {
+    const cur = gSel.value || '2';
+    gSel.innerHTML = '';
+    for (let g = 1; g <= 12; g++) gSel.add(new Option(t('guests.unit', { n: g }), g));
+    gSel.value = cur;
+  }
   const today = new Date(), tomorrow = new Date(today), maxDay = new Date(today);
   tomorrow.setDate(today.getDate() + 1); maxDay.setDate(today.getDate() + 60);
   dIn.min = localIso(today); dIn.max = localIso(maxDay); dIn.value = localIso(tomorrow);
 
-  api('/api/reservations/spots').then(list => list.forEach(s => spotSel.add(new Option(s.label, s.value))))
-    .catch(() => spotSel.add(new Option('Həyətdə', 'HEYET')));
+  async function loadSpots() {
+    const cur = spotSel.value;
+    try {
+      const list = await api('/api/reservations/spots');
+      spotSel.innerHTML = '';
+      list.forEach(s => spotSel.add(new Option(s.label, s.value)));
+      if (cur) spotSel.value = cur;
+    } catch { /* keçildi */ }
+  }
 
   async function loadSlots() {
     if (!dIn.value) return;
     const keep = tSel.value || '19:00';
-    tSel.innerHTML = '<option value="">Yüklənir…</option>';
+    tSel.innerHTML = `<option value="">${t('slot.loading')}</option>`;
     try {
       const slots = await api('/api/reservations/slots?date=' + dIn.value);
       tSel.innerHTML = '';
       for (const s of slots) {
-        const o = new Option(s.remaining > 0 ? `${s.time} · ${s.remaining} yer` : `${s.time} · dolu`, s.time);
+        const label = s.remaining > 0 ? t('slot.seats', { t: s.time, n: s.remaining }) : t('slot.full', { t: s.time });
+        const o = new Option(label, s.time);
         o.disabled = s.remaining <= 0;
         tSel.add(o);
       }
       const want = slots.find(s => s.time === keep && s.remaining > 0) || slots.find(s => s.remaining > 0);
       if (want) tSel.value = want.time;
-      else { tSel.innerHTML = '<option value="">Bu gün üçün boş saat yoxdur</option>'; tSel.value = ''; }
+      else { tSel.innerHTML = `<option value="">${t('slot.none')}</option>`; tSel.value = ''; }
     } catch {
-      tSel.innerHTML = '<option value="">Saatları yükləmək olmadı</option>';
+      tSel.innerHTML = `<option value="">${t('slot.error')}</option>`;
     }
   }
   dIn.addEventListener('change', loadSlots);
-  loadSlots();
 
   function showErrors(fields = {}) {
     form.querySelectorAll('.err').forEach(el => {
@@ -239,31 +285,52 @@
     showErrors();
     conf.hidden = true;
     const payload = {
-      name: form.name.value.trim(),
-      phone: form.phone.value.trim(),
-      date: dIn.value || null,
-      time: tSel.value || null,
-      guests: +gSel.value,
-      spot: spotSel.value || null,
-      note: form.note.value.trim()
+      name: form.name.value.trim(), phone: form.phone.value.trim(),
+      date: dIn.value || null, time: tSel.value || null,
+      guests: +gSel.value, spot: spotSel.value || null, note: form.note.value.trim()
     };
-    submit.disabled = true; submit.textContent = 'Göndərilir…';
+    submit.disabled = true; submit.textContent = t('res.submitting');
     try {
       const r = await api('/api/reservations', { method: 'POST', body: JSON.stringify(payload) });
       const d = new Date(r.date + 'T00:00');
+      const date = `${d.getDate()} ${DICT[lang].months[d.getMonth()]}`;
       conf.className = 'confirm';
-      conf.innerHTML = `<b>Sağ olun, ${esc(r.name.split(' ')[0])}!</b><p>Rezerv nömrəniz <strong>#${r.id}</strong>. ${d.getDate()} ${months[d.getMonth()]}, saat ${esc(r.time)} · ${r.guests} nəfər · ${esc(r.spotLabel)}.</p>`;
+      conf.innerHTML = `<b>${esc(t('confirm.thanks', { name: r.name.split(' ')[0] }))}</b><p>${esc(t('confirm.body', { id: r.id, date, time: r.time, guests: t('guests.unit', { n: r.guests }), spot: r.spotLabel }))}</p>`;
       conf.hidden = false;
       form.note.value = '';
       loadSlots();
     } catch (err) {
       showErrors(err.data?.fields);
       conf.className = 'confirm bad';
-      conf.innerHTML = `<b>Rezerv alınmadı</b><p>${esc(err.message)}</p>`;
+      conf.innerHTML = `<b>${esc(t('confirm.badTitle'))}</b><p>${esc(err.message)}</p>`;
       conf.hidden = false;
       if (err.status === 409) loadSlots();
     } finally {
-      submit.disabled = false; submit.textContent = 'Rezervi təsdiqlə';
+      submit.disabled = false; submit.textContent = t('res.submit');
     }
   });
+
+  /* ---------- dil dəyişimi ---------- */
+  function setLang(next, reload) {
+    lang = DICT[next] ? next : 'az';
+    try { localStorage.setItem('armudu-lang', lang); } catch { /* keçildi */ }
+    applyStatic();
+    fillGuests();
+    hours();
+    draw();
+    if (reload) { loadMenu(); loadJams(); loadSpots(); loadSlots(); }
+    else renderPairing();
+  }
+  document.querySelectorAll('.lang button').forEach(b =>
+    b.addEventListener('click', () => setLang(b.dataset.lang, true)));
+
+  /* ---------- başlanğıc ---------- */
+  applyStatic();
+  fillGuests();
+  hours();
+  draw();
+  loadMenu();
+  loadJams();
+  loadSpots();
+  loadSlots();
 })();
