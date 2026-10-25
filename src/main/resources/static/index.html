@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Armudu Çay Evi</title>
+  <meta name="description" content="İçərişəhərdə çay evi: samovar çayı, mürəbbə rəfi və masa rezervi.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;1,500&family=Alegreya+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top">Armudu <span>çay evi</span></a>
+    <nav aria-label="Əsas">
+      <ul>
+        <li><a href="#menyu">Menyu</a></li>
+        <li><a href="#demle">Dəmləmə</a></li>
+        <li><a href="#murebbe">Mürəbbə</a></li>
+        <li><a href="#rezerv">Rezerv</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">İçərişəhər · 1998-dən bəri</div>
+        <h1>Çay tələsik içilmir. <em>Dəmini alır.</em></h1>
+        <p class="lede">Lənkəran yarpağı, samovar suyu, nazik belli armudu stəkan. Yanında ağ gilas mürəbbəsi və bir az da söhbət. Qapımız hər axşam gecə yarısına qədər açıqdır.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#rezerv">Masa ayır</a>
+          <a class="btn ghost" href="#demle">Evdə dəmlə</a>
+        </div>
+        <div class="facts">
+          <div><b>5 dəq</b><small>dəmləmə müddəti</small></div>
+          <div><b>95 °C</b><small>samovar suyu</small></div>
+          <div><b id="jamCount">6</b><small>növ mürəbbə</small></div>
+        </div>
+      </div>
+      <div class="glass-stage" aria-hidden="true">
+        <canvas id="steam"></canvas>
+        <svg viewBox="0 0 200 260">
+          <defs>
+            <linearGradient id="teaG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="var(--tea)"/>
+              <stop offset="1" stop-color="var(--tea-deep)"/>
+            </linearGradient>
+          </defs>
+          <ellipse cx="100" cy="246" rx="92" ry="12" fill="var(--gold)" opacity=".85"/>
+          <ellipse cx="100" cy="242" rx="70" ry="7" fill="var(--bg)" opacity=".5"/>
+          <path d="M44 62 C44 96 76 112 78 134 C80 154 46 168 46 204 C46 226 70 238 100 238 C130 238 154 226 154 204 C154 168 120 154 122 134 C124 112 156 96 156 62 Z" fill="url(#teaG)"/>
+          <path d="M38 30 C38 90 72 110 74 134 C76 152 40 166 40 204 C40 230 68 242 100 242 C132 242 160 230 160 204 C160 166 124 152 126 134 C128 110 162 90 162 30" fill="var(--glass)" stroke="var(--ink)" stroke-opacity=".35" stroke-width="2"/>
+          <ellipse cx="100" cy="30" rx="62" ry="7" fill="none" stroke="var(--ink)" stroke-opacity=".35" stroke-width="2"/>
+          <ellipse cx="100" cy="62" rx="56" ry="5" fill="var(--tea)" opacity=".9"/>
+          <path d="M56 72 C60 92 80 108 84 124" stroke="#fff" stroke-opacity=".35" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <section id="menyu">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Menyu</div>
+          <h2>Bu axşam samovarda</h2>
+        </div>
+        <div class="chips" role="group" aria-label="Menyunu süz">
+          <button class="chip" data-f="" aria-pressed="true">Hamısı</button>
+          <button class="chip" data-f="CAY" aria-pressed="false">Çay</button>
+          <button class="chip" data-f="SIRIN" aria-pressed="false">Şirniyyat</button>
+          <button class="chip" data-f="DEST" aria-pressed="false">Dəstlər</button>
+        </div>
+      </div>
+      <div class="menu" id="menu"><p class="muted">Menyu yüklənir…</p></div>
+    </div>
+  </section>
+
+  <section id="demle">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Evdə dəmlə</div>
+          <h2>Dəmləmə saatı</h2>
+        </div>
+        <p>Çaynikə su tökün, saatı işə salın. Hər mərhələ vaxtı gələndə yanacaq. Tələsməyin, dəm özü deyəcək.</p>
+      </div>
+      <div class="brew">
+        <div class="ring">
+          <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="52" stroke-width="6"/><circle class="prog" id="prog" cx="60" cy="60" r="52" stroke-width="6"/></svg>
+          <div class="read"><b id="clock">5:00</b><small id="phase">hazırdır</small></div>
+        </div>
+        <div>
+          <ol class="steps" id="steps">
+            <li data-at="0">Çaynikı qaynar su ilə yaxalayın, isinsin.</li>
+            <li data-at="0.08">Hər stəkana bir çay qaşığı yarpaq tökün, üstünə 95 °C su əlavə edin.</li>
+            <li data-at="0.4">Çaynikı samovarın üstünə qoyun, qapağını dəsmalla örtün.</li>
+            <li data-at="0.8">Yarpaqlar dibə çökür. Bir dəfə yavaşca fırladın.</li>
+            <li data-at="1">Dəm hazırdır. Stəkanın üçdə birinə dəm, qalanına su.</li>
+          </ol>
+          <div class="timer-ctrls">
+            <button class="btn" id="startBtn">Başla</button>
+            <button class="btn ghost" id="resetBtn">Sıfırla</button>
+            <label for="brewLen">Müddət
+              <select id="brewLen">
+                <option value="180">3 dəq · yüngül</option>
+                <option value="300" selected>5 dəq · klassik</option>
+                <option value="420">7 dəq · tünd</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="murebbe">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Yanında nə olsun?</div>
+          <h2>Mürəbbə rəfi</h2>
+        </div>
+        <p>Bir kavanoz seçin, ona uyğun çayı biz deyək.</p>
+      </div>
+      <div class="jams" id="jams"></div>
+      <div class="pairing" id="pairing" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="rezerv">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Rezerv</div>
+          <h2>Masanızı ayırın</h2>
+        </div>
+        <p>Saat siyahısında hər yarım saat üçün qalan yer sayı görünür.</p>
+      </div>
+      <div class="reserve">
+        <form id="resForm" novalidate>
+          <label>Ad <input id="rName" name="name" required maxlength="80" placeholder="Leyla Məmmədova" autocomplete="name"><span class="err" data-for="name"></span></label>
+          <label>Telefon <input id="rPhone" name="phone" required placeholder="+994 50 123 45 67" inputmode="tel" autocomplete="tel"><span class="err" data-for="phone"></span></label>
+          <label>Tarix <input id="rDate" name="date" type="date" required><span class="err" data-for="date"></span></label>
+          <label>Saat <select id="rTime" name="time"></select><span class="err" data-for="time"></span></label>
+          <label>Qonaq sayı <select id="rGuests" name="guests"></select><span class="err" data-for="guests"></span></label>
+          <label>Yer <select id="rSpot" name="spot"></select><span class="err" data-for="spot"></span></label>
+          <label class="full">Qeyd <textarea id="rNote" name="note" rows="3" maxlength="500" placeholder="Ad günü, nərd taxtası, xüsusi mürəbbə..."></textarea><span class="err" data-for="note"></span></label>
+          <div class="full"><button class="btn" type="submit" id="resSubmit">Rezervi təsdiqlə</button></div>
+          <div class="confirm" id="confirm" hidden aria-live="polite"></div>
+        </form>
+        <div class="info">
+          <dl>
+            <dt>Ünvan</dt><dd>Kiçik Qala küçəsi 14, İçərişəhər, Bakı</dd>
+            <dt>Saatlar</dt><dd>Hər gün 10:00–00:00<br>Son rezerv 23:30</dd>
+            <dt>Telefon</dt><dd>+994 12 000 00 00</dd>
+            <dt>Metro</dt><dd>İçərişəhər, 4 dəqiqəlik piyada</dd>
+          </dl>
+          <p class="note">Novruz həftəsində şəkərbura və paxlava hər axşam təzə bişirilir. 12 nəfərdən böyük qonaqlıqlar üçün bir gün əvvəl zəng edin.</p>
+          <p class="note">Armudu uydurulmuş bir çay evidir; ünvan və telefon nümunədir.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Armudu çay evi</span>
+    <span>Çay soyumamış gəlin.</span>
+  </div>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
