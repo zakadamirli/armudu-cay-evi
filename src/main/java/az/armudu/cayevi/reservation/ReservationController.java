@@ -38,6 +38,12 @@ public class ReservationController {
         return service.upcoming().stream().map(ReservationResponse::from).toList();
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void cancel(@PathVariable Long id) {
+        service.cancel(id);
+    }
+
     @GetMapping("/slots")
     public List<SlotResponse> slots(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return service.slots(date).stream()

@@ -80,6 +80,14 @@ public class ReservationService {
         return repository.findByVisitDateGreaterThanEqualOrderByVisitDateAscVisitTimeAsc(LocalDate.now());
     }
 
+    @Transactional
+    public void cancel(Long id) {
+        if (!repository.existsById(id)) {
+            throw new ReservationException(HttpStatus.NOT_FOUND, "Belə rezerv tapılmadı");
+        }
+        repository.deleteById(id);
+    }
+
     public record Slot(LocalTime time, int remaining) {
     }
 }
