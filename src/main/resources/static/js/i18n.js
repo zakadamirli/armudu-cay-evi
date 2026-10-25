@@ -58,6 +58,14 @@ window.ARMUDU_I18N = {
     "note.1": "Novruz həftəsində şəkərbura və paxlava hər axşam təzə bişirilir. 12 nəfərdən böyük qonaqlıqlar üçün bir gün əvvəl zəng edin.",
     "note.2": "Armudu uydurulmuş bir çay evidir; ünvan və telefon nümunədir.",
     "foot.copy": "© 2026 Armudu çay evi", "foot.tag": "Çay soyumamış gəlin.",
+    "adm.logout": "Çıxış", "adm.login.h": "Admin girişi",
+    "adm.login.p": "Rezervləri görmək üçün admin istifadəçi adı və parolu.",
+    "adm.login.user": "İstifadəçi adı", "adm.login.pass": "Parol", "adm.login.btn": "Daxil ol",
+    "adm.login.checking": "Yoxlanılır…", "adm.login.bad": "İstifadəçi adı və ya parol yanlışdır.",
+    "adm.login.expired": "Sessiya bitdi, yenidən daxil olun.", "adm.login.out": "Çıxış edildi.",
+    "adm.panel.h": "Gələcək rezervlər", "adm.refresh": "Yenilə", "adm.count": "{n} rezerv",
+    "adm.th.id": "#", "adm.th.date": "Tarix", "adm.th.time": "Saat", "adm.th.name": "Ad", "adm.th.guests": "Nəfər", "adm.th.spot": "Yer", "adm.th.note": "Qeyd",
+    "adm.loading": "Yüklənir…", "adm.empty": "Hələ rezerv yoxdur.", "adm.cancel": "Ləğv et", "adm.cancelling": "Ləğv olunur…", "adm.err.server": "Server xətası",
     "months": ["yanvar", "fevral", "mart", "aprel", "may", "iyun", "iyul", "avqust", "sentyabr", "oktyabr", "noyabr", "dekabr"]
   },
   en: {
@@ -118,6 +126,14 @@ window.ARMUDU_I18N = {
     "note.1": "During Novruz week shakarbura and pakhlava are baked fresh every evening. For parties over 12, please call a day ahead.",
     "note.2": "Armudu is a fictional tea house; the address and phone are examples.",
     "foot.copy": "© 2026 Armudu tea house", "foot.tag": "Come before the tea goes cold.",
+    "adm.logout": "Log out", "adm.login.h": "Admin login",
+    "adm.login.p": "Admin username and password to view reservations.",
+    "adm.login.user": "Username", "adm.login.pass": "Password", "adm.login.btn": "Log in",
+    "adm.login.checking": "Checking…", "adm.login.bad": "Wrong username or password.",
+    "adm.login.expired": "Session expired, please log in again.", "adm.login.out": "Logged out.",
+    "adm.panel.h": "Upcoming reservations", "adm.refresh": "Refresh", "adm.count": "{n} reservations",
+    "adm.th.id": "#", "adm.th.date": "Date", "adm.th.time": "Time", "adm.th.name": "Name", "adm.th.guests": "Guests", "adm.th.spot": "Seat", "adm.th.note": "Note",
+    "adm.loading": "Loading…", "adm.empty": "No reservations yet.", "adm.cancel": "Cancel", "adm.cancelling": "Cancelling…", "adm.err.server": "Server error",
     "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   },
   ru: {
@@ -178,6 +194,14 @@ window.ARMUDU_I18N = {
     "note.1": "В неделю Новруза шекербура и пахлава пекутся свежими каждый вечер. Для компаний больше 12 человек позвоните за день.",
     "note.2": "Armudu — вымышленная чайная; адрес и телефон указаны для примера.",
     "foot.copy": "© 2026 Чайная Armudu", "foot.tag": "Приходите, пока чай не остыл.",
+    "adm.logout": "Выйти", "adm.login.h": "Вход для администратора",
+    "adm.login.p": "Имя пользователя и пароль администратора для просмотра броней.",
+    "adm.login.user": "Имя пользователя", "adm.login.pass": "Пароль", "adm.login.btn": "Войти",
+    "adm.login.checking": "Проверка…", "adm.login.bad": "Неверное имя пользователя или пароль.",
+    "adm.login.expired": "Сессия истекла, войдите снова.", "adm.login.out": "Вы вышли.",
+    "adm.panel.h": "Предстоящие брони", "adm.refresh": "Обновить", "adm.count": "{n} броней",
+    "adm.th.id": "#", "adm.th.date": "Дата", "adm.th.time": "Время", "adm.th.name": "Имя", "adm.th.guests": "Гостей", "adm.th.spot": "Место", "adm.th.note": "Примечание",
+    "adm.loading": "Загрузка…", "adm.empty": "Броней пока нет.", "adm.cancel": "Отменить", "adm.cancelling": "Отмена…", "adm.err.server": "Ошибка сервера",
     "months": ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"]
   }
 };

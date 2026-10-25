@@ -16,35 +16,50 @@
 <header class="top">
   <div class="wrap">
     <a class="logo" href="index.html">Armudu <span>admin</span></a>
-    <button class="btn ghost" id="logout" type="button" hidden>Çıxış</button>
+    <div class="lang" role="group" aria-label="Dil / Language / Язык">
+      <button type="button" data-lang="az" aria-pressed="true">AZ</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+    </div>
+    <button class="btn ghost" id="logout" type="button" hidden data-i18n="adm.logout">Çıxış</button>
   </div>
 </header>
 
 <main class="wrap admin">
   <form class="login" id="loginForm">
-    <h1>Admin girişi</h1>
-    <p class="muted">Rezervləri görmək üçün admin istifadəçi adı və parolu.</p>
-    <label>İstifadəçi adı <input id="user" autocomplete="username" required></label>
-    <label>Parol <input id="pass" type="password" autocomplete="current-password" required></label>
-    <button class="btn" type="submit" id="loginBtn">Daxil ol</button>
+    <h1 data-i18n="adm.login.h">Admin girişi</h1>
+    <p class="muted" data-i18n="adm.login.p">Rezervləri görmək üçün admin istifadəçi adı və parolu.</p>
+    <label><span data-i18n="adm.login.user">İstifadəçi adı</span> <input id="user" autocomplete="username" required></label>
+    <label><span data-i18n="adm.login.pass">Parol</span> <input id="pass" type="password" autocomplete="current-password" required></label>
+    <button class="btn" type="submit" id="loginBtn" data-i18n="adm.login.btn">Daxil ol</button>
     <p class="err" id="loginErr"></p>
   </form>
 
   <section class="panel" id="panel" hidden>
     <div class="panel-head">
-      <h1>Gələcək rezervlər</h1>
-      <button class="btn ghost" id="refresh" type="button">Yenilə</button>
+      <h1 data-i18n="adm.panel.h">Gələcək rezervlər</h1>
+      <button class="btn ghost" id="refresh" type="button" data-i18n="adm.refresh">Yenilə</button>
     </div>
     <p class="muted" id="count"></p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>#</th><th>Tarix</th><th>Saat</th><th>Ad</th><th>Nəfər</th><th>Yer</th><th>Qeyd</th><th></th></tr></thead>
+        <thead><tr>
+          <th data-i18n="adm.th.id">#</th>
+          <th data-i18n="adm.th.date">Tarix</th>
+          <th data-i18n="adm.th.time">Saat</th>
+          <th data-i18n="adm.th.name">Ad</th>
+          <th data-i18n="adm.th.guests">Nəfər</th>
+          <th data-i18n="adm.th.spot">Yer</th>
+          <th data-i18n="adm.th.note">Qeyd</th>
+          <th></th>
+        </tr></thead>
         <tbody id="rows"></tbody>
       </table>
     </div>
   </section>
 </main>
 
+<script src="js/i18n.js"></script>
 <script src="js/admin.js"></script>
 </body>
 </html>
