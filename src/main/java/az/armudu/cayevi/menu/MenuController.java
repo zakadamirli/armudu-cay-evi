@@ -26,9 +26,11 @@ public class MenuController {
         return items.stream().map(MenuItemResponse::from).toList();
     }
 
-    public record MenuItemResponse(Long id, Category category, String name, String description, BigDecimal price, String tag) {
+    public record MenuItemResponse(Long id, Category category, String name, String description, BigDecimal price,
+                                   String tag, Integer brewMinutes) {
         static MenuItemResponse from(MenuItem m) {
-            return new MenuItemResponse(m.getId(), m.getCategory(), m.getName(), m.getDescription(), m.getPrice(), m.getTag());
+            return new MenuItemResponse(m.getId(), m.getCategory(), m.getName(), m.getDescription(), m.getPrice(),
+                    m.getTag(), m.getBrewMinutes());
         }
     }
 }

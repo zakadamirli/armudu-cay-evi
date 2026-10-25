@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Armudu · Admin</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:wght@700&family=Alegreya+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html">Armudu <span>admin</span></a>
+    <button class="btn ghost" id="logout" type="button" hidden>Çıxış</button>
+  </div>
+</header>
+
+<main class="wrap admin">
+  <form class="login" id="loginForm">
+    <h1>Admin girişi</h1>
+    <p class="muted">Rezervləri görmək üçün admin istifadəçi adı və parolu.</p>
+    <label>İstifadəçi adı <input id="user" autocomplete="username" required></label>
+    <label>Parol <input id="pass" type="password" autocomplete="current-password" required></label>
+    <button class="btn" type="submit" id="loginBtn">Daxil ol</button>
+    <p class="err" id="loginErr"></p>
+  </form>
+
+  <section class="panel" id="panel" hidden>
+    <div class="panel-head">
+      <h1>Gələcək rezervlər</h1>
+      <button class="btn ghost" id="refresh" type="button">Yenilə</button>
+    </div>
+    <p class="muted" id="count"></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Tarix</th><th>Saat</th><th>Ad</th><th>Nəfər</th><th>Yer</th><th>Qeyd</th><th></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script src="js/admin.js"></script>
+</body>
+</html>

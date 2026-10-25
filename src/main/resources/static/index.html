@@ -4,26 +4,38 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Armudu Çay Evi</title>
-  <meta name="description" content="İçərişəhərdə çay evi: samovar çayı, mürəbbə rəfi və masa rezervi.">
+  <meta name="description" content="İçərişəhərdə samovar çay evi: menyu, dəmləmə bələdçisi, mürəbbə rəfi, tədbirlər və onlayn masa rezervi.">
+  <meta name="theme-color" content="#a8320f">
+  <meta property="og:title" content="Armudu Çay Evi">
+  <meta property="og:description" content="İçərişəhərdə samovar çayı, mürəbbə rəfi və onlayn masa rezervi.">
+  <meta property="og:type" content="website">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;1,500&family=Alegreya+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="css/style.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"CafeOrCoffeeShop","name":"Armudu çay evi","servesCuisine":"Azərbaycan çayı","address":{"@type":"PostalAddress","streetAddress":"Kiçik Qala küçəsi 14","addressLocality":"Bakı","addressRegion":"İçərişəhər","addressCountry":"AZ"},"telephone":"+994 12 000 00 00","openingHours":"Mo-Su 10:00-00:00"}
+  </script>
 </head>
 <body>
+<a class="skip" href="#top">Məzmuna keç</a>
 
-<header class="top">
+<header class="top" id="siteHeader">
   <div class="wrap">
     <a class="logo" href="#top">Armudu <span>çay evi</span></a>
-    <nav aria-label="Əsas">
+    <nav aria-label="Əsas naviqasiya">
       <ul>
+        <li><a href="#hekaye">Hekayə</a></li>
         <li><a href="#menyu">Menyu</a></li>
-        <li><a href="#demle">Dəmləmə</a></li>
-        <li><a href="#murebbe">Mürəbbə</a></li>
+        <li><a href="#tedbirler">Tədbirlər</a></li>
         <li><a href="#rezerv">Rezerv</a></li>
       </ul>
     </nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="İşıq/qaranlıq rejimi" aria-pressed="false">
+      <svg class="ic-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></g></svg>
+      <svg class="ic-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5z" fill="currentColor"/></svg>
+    </button>
   </div>
 </header>
 
@@ -65,7 +77,25 @@
     </div>
   </div>
 
-  <section id="menyu">
+  <section id="hekaye" class="reveal">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Bizim hekayə</div>
+          <h2>Bir samovarla başladı</h2>
+        </div>
+        <p>İçərişəhərin dar döngəsində, eyni samovarın başında dörddən çox nəsil çay içib. Hekayəmiz qısadır, amma dəmi uzun.</p>
+      </div>
+      <ol class="timeline">
+        <li><span class="yr">1998</span><div><h3>Qapı açılır</h3><p>Baba Kərim samovarını Kiçik Qala küçəsinə gətirir, ilk stəkan çay süzülür.</p></div></li>
+        <li><span class="yr">2008</span><div><h3>Həyət masaları</h3><p>Tut ağacının altına ilk masalar qoyulur; yay axşamları dolub-daşır.</p></div></li>
+        <li><span class="yr">2016</span><div><h3>Mürəbbə rəfi</h3><p>Ailə reseptləri ilə on iki növ mürəbbə rəfə düzülür, hər çaya bir cüt.</p></div></li>
+        <li><span class="yr">bugün</span><div><h3>Onlayn qapı</h3><p>Masanı evdən ayırırsan, çayın dəmini biz tuturuq.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="menyu" class="reveal tinted">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -83,17 +113,17 @@
     </div>
   </section>
 
-  <section id="demle">
+  <section id="demle" class="reveal">
     <div class="wrap">
       <div class="sec-head">
         <div>
           <div class="eyebrow">Evdə dəmlə</div>
           <h2>Dəmləmə saatı</h2>
         </div>
-        <p>Çaynikə su tökün, saatı işə salın. Hər mərhələ vaxtı gələndə yanacaq. Tələsməyin, dəm özü deyəcək.</p>
+        <p>Çaynikə su tökün, saatı işə salın. Hər mərhələ vaxtı gələndə yanacaq. Menyudan bir çay seçsən, müddətini özü qoyur.</p>
       </div>
       <div class="brew">
-        <div class="ring">
+        <div class="ring" id="ring">
           <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="52" stroke-width="6"/><circle class="prog" id="prog" cx="60" cy="60" r="52" stroke-width="6"/></svg>
           <div class="read"><b id="clock">5:00</b><small id="phase">hazırdır</small></div>
         </div>
@@ -106,8 +136,8 @@
             <li data-at="1">Dəm hazırdır. Stəkanın üçdə birinə dəm, qalanına su.</li>
           </ol>
           <div class="timer-ctrls">
-            <button class="btn" id="startBtn">Başla</button>
-            <button class="btn ghost" id="resetBtn">Sıfırla</button>
+            <button class="btn" id="startBtn" type="button">Başla</button>
+            <button class="btn ghost" id="resetBtn" type="button">Sıfırla</button>
             <label for="brewLen">Müddət
               <select id="brewLen">
                 <option value="180">3 dəq · yüngül</option>
@@ -121,7 +151,7 @@
     </div>
   </section>
 
-  <section id="murebbe">
+  <section id="murebbe" class="reveal">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -135,7 +165,64 @@
     </div>
   </section>
 
-  <section id="rezerv">
+  <section id="tedbirler" class="reveal tinted">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Tədbirlər</div>
+          <h2>Axşamın öz ritmi var</h2>
+        </div>
+        <p>Həftə boyu çay süfrəsinin ətrafında kiçik tədbirlər. Masa ayırıb qoşulun.</p>
+      </div>
+      <div class="events">
+        <article class="event">
+          <span class="when">Hər çərşənbə · 19:00</span>
+          <h3>Nərd gecələri</h3>
+          <p>Taxta açılır, çay dəmlənir. Qalib növbəti dəmi udur.</p>
+          <a class="arrow" href="#rezerv">Masa ayır →</a>
+        </article>
+        <article class="event">
+          <span class="when">Cümə axşamı · 20:30</span>
+          <h3>Canlı muğam</h3>
+          <p>Tar və kamança həyətdə. Stəkan isti, hava sərin.</p>
+          <a class="arrow" href="#rezerv">Masa ayır →</a>
+        </article>
+        <article class="event">
+          <span class="when">Mart · Novruz həftəsi</span>
+          <h3>Novruz süfrəsi</h3>
+          <p>Səməni, şəkərbura, paxlava və xüsusi dəmləmə.</p>
+          <a class="arrow" href="#rezerv">Masa ayır →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="reyler" class="reveal">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Rəylər</div>
+          <h2>Qonaqlar nə deyir</h2>
+        </div>
+      </div>
+      <div class="reviews">
+        <figure class="review">
+          <blockquote>Çayın dadından çox, dəmlənmə səbrini sevdim. Tələsmirlər, bu da hiss olunur.</blockquote>
+          <figcaption>Nərgiz A. <span>· mart 2026</span></figcaption>
+        </figure>
+        <figure class="review">
+          <blockquote>Ağ gilas mürəbbəsi ilə Lənkəran çayı — uşaqlığıma qayıtdım. Həyət masası ayrıca ləzzət.</blockquote>
+          <figcaption>Rəşad M. <span>· fevral 2026</span></figcaption>
+        </figure>
+        <figure class="review">
+          <blockquote>Turist kimi gəldim, qonşu kimi getdim. Samovarın başında vaxt başqa cür keçir.</blockquote>
+          <figcaption>Anna K. <span>· yanvar 2026</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="rezerv" class="reveal tinted">
     <div class="wrap">
       <div class="sec-head">
         <div>
@@ -146,20 +233,20 @@
       </div>
       <div class="reserve">
         <form id="resForm" novalidate>
-          <label>Ad <input id="rName" name="name" required maxlength="80" placeholder="Leyla Məmmədova" autocomplete="name"><span class="err" data-for="name"></span></label>
-          <label>Telefon <input id="rPhone" name="phone" required placeholder="+994 50 123 45 67" inputmode="tel" autocomplete="tel"><span class="err" data-for="phone"></span></label>
-          <label>Tarix <input id="rDate" name="date" type="date" required><span class="err" data-for="date"></span></label>
-          <label>Saat <select id="rTime" name="time"></select><span class="err" data-for="time"></span></label>
-          <label>Qonaq sayı <select id="rGuests" name="guests"></select><span class="err" data-for="guests"></span></label>
-          <label>Yer <select id="rSpot" name="spot"></select><span class="err" data-for="spot"></span></label>
-          <label class="full">Qeyd <textarea id="rNote" name="note" rows="3" maxlength="500" placeholder="Ad günü, nərd taxtası, xüsusi mürəbbə..."></textarea><span class="err" data-for="note"></span></label>
+          <label>Ad <input id="rName" name="name" required maxlength="80" placeholder="Leyla Məmmədova" autocomplete="name" aria-describedby="err-name"><span class="err" id="err-name" data-for="name"></span></label>
+          <label>Telefon <input id="rPhone" name="phone" required placeholder="+994 50 123 45 67" inputmode="tel" autocomplete="tel" aria-describedby="err-phone"><span class="err" id="err-phone" data-for="phone"></span></label>
+          <label>Tarix <input id="rDate" name="date" type="date" required aria-describedby="err-date"><span class="err" id="err-date" data-for="date"></span></label>
+          <label>Saat <select id="rTime" name="time" aria-describedby="err-time"></select><span class="err" id="err-time" data-for="time"></span></label>
+          <label>Qonaq sayı <select id="rGuests" name="guests" aria-describedby="err-guests"></select><span class="err" id="err-guests" data-for="guests"></span></label>
+          <label>Yer <select id="rSpot" name="spot" aria-describedby="err-spot"></select><span class="err" id="err-spot" data-for="spot"></span></label>
+          <label class="full">Qeyd <textarea id="rNote" name="note" rows="3" maxlength="500" placeholder="Ad günü, nərd taxtası, xüsusi mürəbbə..."></textarea></label>
           <div class="full"><button class="btn" type="submit" id="resSubmit">Rezervi təsdiqlə</button></div>
           <div class="confirm" id="confirm" hidden aria-live="polite"></div>
         </form>
-        <div class="info">
+        <div class="info" id="elaqe">
           <dl>
             <dt>Ünvan</dt><dd>Kiçik Qala küçəsi 14, İçərişəhər, Bakı</dd>
-            <dt>Saatlar</dt><dd>Hər gün 10:00–00:00<br>Son rezerv 23:30</dd>
+            <dt>Bu gün</dt><dd id="todayHours">Hər gün 10:00–00:00</dd>
             <dt>Telefon</dt><dd>+994 12 000 00 00</dd>
             <dt>Metro</dt><dd>İçərişəhər, 4 dəqiqəlik piyada</dd>
           </dl>

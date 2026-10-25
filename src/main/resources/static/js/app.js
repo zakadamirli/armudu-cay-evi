@@ -2,6 +2,7 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = id => document.getElementById(id);
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const root = document.documentElement;
 
   async function api(path, options) {
     const res = await fetch(path, { headers: { 'Content-Type': 'application/json' }, ...options });
@@ -10,11 +11,54 @@
     return data;
   }
 
+  /* ---------- tema ---------- */
+  const toggle = $('themeToggle');
+  function applyTheme(mode) {
+    if (mode === 'dark' || mode === 'light') root.dataset.theme = mode;
+    else delete root.dataset.theme;
+    const dark = root.dataset.theme === 'dark'
+      || (!root.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+    toggle.setAttribute('aria-pressed', String(dark));
+  }
+  let saved = null;
+  try { saved = localStorage.getItem('armudu-theme'); } catch { /* keçildi */ }
+  applyTheme(saved);
+  toggle.addEventListener('click', () => {
+    const dark = root.dataset.theme === 'dark'
+      || (!root.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+    const next = dark ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem('armudu-theme', next); } catch { /* keçildi */ }
+  });
+
+  /* ---------- scroll-spy naviqasiya ---------- */
+  const navLinks = [...document.querySelectorAll('nav a')];
+  const byId = Object.fromEntries(navLinks.map(a => [a.getAttribute('href').slice(1), a]));
+  const spy = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      const link = byId[e.target.id];
+      if (!link) return;
+      if (e.isIntersecting) {
+        navLinks.forEach(a => a.removeAttribute('aria-current'));
+        link.setAttribute('aria-current', 'true');
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  Object.keys(byId).forEach(id => { const el = $(id); if (el) spy.observe(el); });
+
+  /* ---------- bu gün açıqdır? ---------- */
+  (function hours() {
+    const el = $('todayHours');
+    if (!el) return;
+    const now = new Date(), h = now.getHours();
+    const open = h >= 10 || h < 0; // 10:00–00:00
+    el.textContent = open ? 'İndi açıqdır · 00:00-a qədər' : 'İndi bağlıdır · səhər 10:00-da açılır';
+  })();
+
   /* ---------- buxar ---------- */
   const cv = $('steam');
   const glass = document.querySelector('.glass-stage svg');
   const ctx = cv.getContext('2d');
-  // rimX/rimY/rimW: stəkanın ağzı (SVG viewBox-da y=30, eni 124/200), buxar oradan qalxır
   let W = 0, H = 0, rimX = 0, rimY = 0, rimW = 0, parts = [];
   function size() {
     const r = cv.getBoundingClientRect(), g = glass.getBoundingClientRect(), d = devicePixelRatio || 1;
@@ -24,18 +68,18 @@
     rimW = g.width * 124 / 200;
   }
   size(); addEventListener('resize', size);
-  const steamColor = () => getComputedStyle(document.documentElement).getPropertyValue('--steam').trim();
+  const steamColor = () => getComputedStyle(root).getPropertyValue('--steam').trim();
   function spawn() {
     parts.push({ x: rimX + (Math.random() - .5) * rimW * .7, y: rimY - 4, r: 3 + Math.random() * 5, life: 0, max: 140 + Math.random() * 80, ph: Math.random() * 6.28, sp: .3 + Math.random() * .3 });
   }
-  function step(p) { p.life++; p.y -= p.sp; p.x += Math.sin(p.ph + p.life / 28) * .45; p.r += .09; }
+  function stepP(p) { p.life++; p.y -= p.sp; p.x += Math.sin(p.ph + p.life / 28) * .45; p.r += .09; }
   function tick() {
     ctx.clearRect(0, 0, W, H);
     if (parts.length < 30 && Math.random() < .3) spawn();
     const c = steamColor();
     parts = parts.filter(p => p.life < p.max);
     for (const p of parts) {
-      step(p);
+      stepP(p);
       ctx.globalAlpha = .55 * Math.sin(Math.PI * p.life / p.max); ctx.fillStyle = c;
       ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.fill();
     }
@@ -43,7 +87,7 @@
     requestAnimationFrame(tick);
   }
   if (!reduce) {
-    for (let i = 0; i < 160; i++) { if (parts.length < 30 && Math.random() < .3) spawn(); parts.forEach(step); parts = parts.filter(p => p.life < p.max); }
+    for (let i = 0; i < 160; i++) { if (parts.length < 30 && Math.random() < .3) spawn(); parts.forEach(stepP); parts = parts.filter(p => p.life < p.max); }
     tick();
   }
 
@@ -53,20 +97,28 @@
   async function loadMenu(category) {
     try {
       const items = await api('/api/menu' + (category ? '?category=' + category : ''));
-      menuEl.innerHTML = items.map(m =>
-        `<div class="item"><h3>${esc(m.name)}${m.tag ? `<span class="tag">${esc(m.tag)}</span>` : ''}</h3><span class="price">${price(m.price)}</span><p>${esc(m.description)}</p></div>`).join('');
+      menuEl.innerHTML = items.map(m => {
+        const brew = Number.isInteger(m.brewMinutes)
+          ? `<button class="brew-chip" type="button" data-brew="${m.brewMinutes}" data-tea="${esc(m.name)}">⏱ ${m.brewMinutes} dəq · dəmlə</button>`
+          : '';
+        return `<div class="item"><h3>${esc(m.name)}${m.tag ? `<span class="tag">${esc(m.tag)}</span>` : ''}</h3><span class="price">${price(m.price)}</span><p>${esc(m.description)}</p>${brew}</div>`;
+      }).join('');
     } catch (e) {
       menuEl.innerHTML = `<p class="muted">Menyunu yükləmək olmadı. ${esc(e.message)}</p>`;
     }
   }
+  menuEl.addEventListener('click', e => {
+    const chip = e.target.closest('.brew-chip');
+    if (chip) setBrew(parseInt(chip.dataset.brew, 10), chip.dataset.tea);
+  });
   document.querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => {
-    document.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', x === b));
+    document.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
     loadMenu(b.dataset.f);
   }));
   loadMenu('');
 
   /* ---------- dəmləmə saatı ---------- */
-  const prog = $('prog'), clock = $('clock'), phase = $('phase');
+  const ring = $('ring'), prog = $('prog'), clock = $('clock'), phase = $('phase');
   const steps = [...document.querySelectorAll('#steps li')];
   const startBtn = $('startBtn'), lenSel = $('brewLen');
   const C = 2 * Math.PI * 52;
@@ -81,28 +133,46 @@
     steps.forEach((li, i) => { if (frac >= +li.dataset.at) cur = i; });
     steps.forEach((li, i) => { li.classList.toggle('on', i === cur && (timer || left === 0)); li.classList.toggle('done', i < cur); });
     phase.textContent = left === 0 ? 'dəm hazırdır' : timer ? 'dəmlənir…' : left === total ? 'hazırdır' : 'fasilə';
+    ring.classList.toggle('done', left === 0);
   }
   function stop() { clearInterval(timer); timer = null; startBtn.textContent = left === total ? 'Başla' : 'Davam et'; }
+  function finish() {
+    left = 0; stop(); startBtn.textContent = 'Yenidən';
+    ring.classList.add('pulse');
+    setTimeout(() => ring.classList.remove('pulse'), 800);
+  }
   startBtn.addEventListener('click', () => {
     if (timer) { stop(); draw(); return; }
     if (left === 0) left = total;
     startBtn.textContent = 'Dayandır';
-    timer = setInterval(() => {
-      left--;
-      if (left <= 0) { left = 0; stop(); startBtn.textContent = 'Yenidən'; }
-      draw();
-    }, 1000);
+    timer = setInterval(() => { left--; if (left <= 0) { finish(); } draw(); }, 1000);
     draw();
   });
   $('resetBtn').addEventListener('click', () => { stop(); left = total; startBtn.textContent = 'Başla'; draw(); });
   lenSel.addEventListener('change', () => { stop(); total = left = +lenSel.value; startBtn.textContent = 'Başla'; draw(); });
+
+  function setBrew(minutes, teaName) {
+    if (!Number.isInteger(minutes) || minutes <= 0) return;
+    stop();
+    total = left = minutes * 60;
+    const val = String(total);
+    if (![...lenSel.options].some(o => o.value === val)) {
+      lenSel.add(new Option(`${minutes} dəq · ${teaName}`, val));
+    }
+    lenSel.value = val;
+    startBtn.textContent = 'Başla';
+    ring.classList.remove('done');
+    draw();
+    $('demle').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    startBtn.focus({ preventScroll: true });
+  }
   draw();
 
   /* ---------- mürəbbə ---------- */
   const jamsEl = $('jams'), pairEl = $('pairing');
   let jams = [];
   function pick(i) {
-    jamsEl.querySelectorAll('.jam').forEach(b => b.setAttribute('aria-pressed', +b.dataset.i === i));
+    jamsEl.querySelectorAll('.jam').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.i === i)));
     pairEl.innerHTML = `<strong>${esc(jams[i].name)} mürəbbəsi:</strong> ${esc(jams[i].pairing)}`;
   }
   jamsEl.addEventListener('click', e => { const b = e.target.closest('.jam'); if (b) pick(+b.dataset.i); });
@@ -110,7 +180,12 @@
     jams = list;
     $('jamCount').textContent = list.length;
     jamsEl.innerHTML = list.map((j, i) =>
-      `<button class="jam" data-i="${i}" aria-pressed="false"><span class="jar" style="background:${/^#[0-9a-f]{6}$/i.test(j.color) ? j.color : '#999'}"></span><b>${esc(j.name)}</b><small>${esc(j.description)}</small></button>`).join('');
+      `<button class="jam" data-i="${i}" aria-pressed="false"><span class="jar"></span><b>${esc(j.name)}</b><small>${esc(j.description)}</small></button>`).join('');
+    // Rəngləri CSSOM ilə təyin et (CSP inline style atributlarını bloklayır)
+    list.forEach((j, i) => {
+      const jar = jamsEl.querySelector(`.jam[data-i="${i}"] .jar`);
+      if (jar) jar.style.background = /^#[0-9a-f]{6}$/i.test(j.color) ? j.color : '#999';
+    });
     if (list.length) pick(0);
   }).catch(e => { pairEl.textContent = 'Mürəbbə rəfini yükləmək olmadı. ' + e.message; });
 
@@ -125,7 +200,8 @@
   tomorrow.setDate(today.getDate() + 1); maxDay.setDate(today.getDate() + 60);
   dIn.min = localIso(today); dIn.max = localIso(maxDay); dIn.value = localIso(tomorrow);
 
-  api('/api/reservations/spots').then(list => list.forEach(s => spotSel.add(new Option(s.label, s.value))));
+  api('/api/reservations/spots').then(list => list.forEach(s => spotSel.add(new Option(s.label, s.value))))
+    .catch(() => spotSel.add(new Option('Həyətdə', 'HEYET')));
 
   async function loadSlots() {
     if (!dIn.value) return;
@@ -140,9 +216,9 @@
         tSel.add(o);
       }
       const want = slots.find(s => s.time === keep && s.remaining > 0) || slots.find(s => s.remaining > 0);
-      tSel.value = want ? want.time : '';
-      if (!want) tSel.add(new Option('Bu gün üçün boş saat yoxdur', ''), 0), tSel.value = '';
-    } catch (e) {
+      if (want) tSel.value = want.time;
+      else { tSel.innerHTML = '<option value="">Bu gün üçün boş saat yoxdur</option>'; tSel.value = ''; }
+    } catch {
       tSel.innerHTML = '<option value="">Saatları yükləmək olmadı</option>';
     }
   }

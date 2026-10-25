@@ -27,18 +27,22 @@ public class MenuItem {
 
     private String tag;
 
+    /** Çaylar üçün tövsiyə olunan dəmləmə müddəti (dəqiqə); digər məhsullarda null. */
+    private Integer brewMinutes;
+
     @Column(nullable = false)
     private int sortOrder;
 
     protected MenuItem() {
     }
 
-    public MenuItem(Category category, String name, String description, BigDecimal price, String tag, int sortOrder) {
+    public MenuItem(Category category, String name, String description, BigDecimal price, String tag, Integer brewMinutes, int sortOrder) {
         this.category = category;
         this.name = name;
         this.description = description;
         this.price = price;
         this.tag = tag;
+        this.brewMinutes = brewMinutes;
         this.sortOrder = sortOrder;
     }
 
@@ -48,5 +52,6 @@ public class MenuItem {
     public String getDescription() { return description; }
     public BigDecimal getPrice() { return price; }
     public String getTag() { return tag; }
+    public Integer getBrewMinutes() { return brewMinutes; }
     public int getSortOrder() { return sortOrder; }
 }

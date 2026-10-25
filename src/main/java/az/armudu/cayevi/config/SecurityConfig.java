@@ -66,7 +66,7 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
                         .requestMatchers("/actuator/**").hasRole("ADMIN")
                         // Statik sayt
-                        .requestMatchers(HttpMethod.GET, "/", "/index.html", "/favicon.svg",
+                        .requestMatchers(HttpMethod.GET, "/", "/index.html", "/admin.html", "/favicon.svg",
                                 "/css/**", "/js/**", "/img/**", "/error").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(b -> {})

@@ -29,16 +29,16 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) {
         if (menu.count() == 0) {
             menu.saveAll(List.of(
-                    item(Category.CAY, "Lənkəran qara çayı", "Cənub yamaclarının yarpağı. Samovardan, armudu stəkanda.", "2.50", "ən çox", 1),
-                    item(Category.CAY, "Kəklikotulu çay", "Dağ kəklikotu ilə dəmlənir. Soyuq axşamların çayı.", "3.00", null, 2),
-                    item(Category.CAY, "Zəfəranlı çay", "Bir neçə zəfəran teli, qızılı rəng, yüngül ətir.", "4.50", null, 3),
-                    item(Category.CAY, "Qızılgül ləçəkli çay", "Qubanın qızılgülü, qara çayla qarışıq.", "3.50", null, 4),
-                    item(Category.SIRIN, "Şəkərbura", "Qoz içli, əl ilə naxışlanmış. Ədədi.", "1.50", null, 5),
-                    item(Category.SIRIN, "Bakı paxlavası", "Doqquz qat, fındıq və zəfəran. Bir dilim.", "2.00", null, 6),
-                    item(Category.SIRIN, "Mütəkkə", "Kəsilmiş qoz və hil ilə yayma xəmir.", "1.50", null, 7),
-                    item(Category.DEST, "Samovar dəsti", "İki nəfərlik samovar, iki mürəbbə, limon, nabat və qənd.", "18.00", "iki nəfər", 8),
-                    item(Category.DEST, "Novruz xonçası", "Şəkərbura, paxlava, qoğal, badam, çay. Dörd nəfərlik.", "26.00", "mövsümi", 9),
-                    item(Category.DEST, "Nərd və çay", "Nərd taxtası, bir çaynik dəm, bir boşqab quru meyvə.", "9.00", null, 10)
+                    item(Category.CAY, "Lənkəran qara çayı", "Cənub yamaclarının yarpağı. Samovardan, armudu stəkanda.", "2.50", "ən çox", 5, 1),
+                    item(Category.CAY, "Kəklikotulu çay", "Dağ kəklikotu ilə dəmlənir. Soyuq axşamların çayı.", "3.00", null, 7, 2),
+                    item(Category.CAY, "Zəfəranlı çay", "Bir neçə zəfəran teli, qızılı rəng, yüngül ətir.", "4.50", null, 4, 3),
+                    item(Category.CAY, "Qızılgül ləçəkli çay", "Qubanın qızılgülü, qara çayla qarışıq.", "3.50", null, 5, 4),
+                    item(Category.SIRIN, "Şəkərbura", "Qoz içli, əl ilə naxışlanmış. Ədədi.", "1.50", null, null, 5),
+                    item(Category.SIRIN, "Bakı paxlavası", "Doqquz qat, fındıq və zəfəran. Bir dilim.", "2.00", null, null, 6),
+                    item(Category.SIRIN, "Mütəkkə", "Kəsilmiş qoz və hil ilə yayma xəmir.", "1.50", null, null, 7),
+                    item(Category.DEST, "Samovar dəsti", "İki nəfərlik samovar, iki mürəbbə, limon, nabat və qənd.", "18.00", "iki nəfər", null, 8),
+                    item(Category.DEST, "Novruz xonçası", "Şəkərbura, paxlava, qoğal, badam, çay. Dörd nəfərlik.", "26.00", "mövsümi", null, 9),
+                    item(Category.DEST, "Nərd və çay", "Nərd taxtası, bir çaynik dəm, bir boşqab quru meyvə.", "9.00", null, null, 10)
             ));
         }
         if (jams.count() == 0) {
@@ -53,7 +53,7 @@ public class DataInitializer implements CommandLineRunner {
         }
     }
 
-    private static MenuItem item(Category c, String name, String desc, String price, String tag, int order) {
-        return new MenuItem(c, name, desc, new BigDecimal(price), tag, order);
+    private static MenuItem item(Category c, String name, String desc, String price, String tag, Integer brewMinutes, int order) {
+        return new MenuItem(c, name, desc, new BigDecimal(price), tag, brewMinutes, order);
     }
 }

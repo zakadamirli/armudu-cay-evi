@@ -2,14 +2,17 @@
 
 İçərişəhərdə uydurulmuş bir çay evinin saytı. Spring Boot backend və statik HTML/CSS/JS frontend eyni tətbiqdə işləyir.
 
-- **Menyu:** çay, şirniyyat və dəstlər bazadan gəlir, kateqoriyaya görə süzülür.
-- **Dəmləmə saatı:** 3, 5 və ya 7 dəqiqəlik geri sayım. Yalnız brauzerdə işləyir.
+- **Menyu:** çay, şirniyyat və dəstlər bazadan gəlir, kateqoriyaya görə süzülür. Hər çayın yanında dəmləmə müddəti var.
+- **Dəmləmə saatı:** geri sayım. Menyudan bir çay seçsən, müddətini özü qoyur.
 - **Mürəbbə rəfi:** kavanoz seçəndə uyğun çay tövsiyəsi göstərilir.
 - **Masa rezervi:** yarım saatlıq slotlar, hər slotda qonaq tutumu, server tərəfdə yoxlama.
+- **Hekayə, tədbirlər, rəylər** bölmələri; işıq/qaranlıq rejim seçimi.
+- **Admin panel** (`/admin.html`): gələcək rezervləri gör və ləğv et (giriş tələb olunur).
 
 ## Texnologiyalar
 
-Java 21, Spring Boot 4.1 (Web MVC, Data JPA, Validation), H2 (fayl bazası), Gradle.
+Java 21, Spring Boot 4.1 (Web MVC, Data JPA, Validation, Security, Actuator), H2 / PostgreSQL, Gradle.
+Frontend: statik HTML/CSS/JS, kənar asılılıq yoxdur.
 
 ## İşə salmaq
 
@@ -35,9 +38,29 @@ Konfiqurasiya mühit dəyişənləri ilə verilir:
 | Dəyişən | Standart | Nə üçün |
 |---|---|---|
 | `PORT` | `8080` | HTTP portu |
-| `DB_URL` | `jdbc:h2:file:./data/armudu` | Baza ünvanı |
+| `DB_URL` | `jdbc:h2:file:./data/armudu` | Baza ünvanı (PostgreSQL üçün `jdbc:postgresql://...`) |
 | `DB_USERNAME` | `sa` | Baza istifadəçisi |
 | `DB_PASSWORD` | boş | Baza parolu |
+| `ADMIN_USERNAME` | `admin` | Admin istifadəçi adı |
+| `ADMIN_PASSWORD` | `armudu-admin` | Admin parolu — **prodda mütləq dəyişin** |
+
+### Docker
+
+```bash
+docker build -t armudu .
+docker run -p 8080:8080 -e ADMIN_PASSWORD=güclü-parol armudu
+```
+
+### Təhlükəsizlik
+
+Açıq API: menyu, mürəbbələr, slotlar və rezerv yaratmaq. Yalnız admin (HTTP Basic):
+bütün rezervlərin siyahısı və rezerv ləğvi. Cavablarda CSP, HSTS, `X-Frame-Options: DENY`,
+nosniff və Referrer-Policy header-ləri var.
+
+### CI/CD
+
+`.github/workflows/ci.yml` — hər push/PR-da build + test + JUnit hesabatı.
+`.github/workflows/docker.yml` — master və `v*` taqlarında GHCR-ə Docker image.
 
 ## Testlər
 
@@ -55,7 +78,9 @@ Konfiqurasiya mühit dəyişənləri ilə verilir:
 | GET | `/api/reservations/slots?date=2026-10-26` | Günün slotları və qalan yer sayı |
 | POST | `/api/reservations` | Yeni rezerv |
 | GET | `/api/reservations/{id}` | Bir rezerv |
-| GET | `/api/reservations` | Bu gündən sonrakı rezervlər |
+| GET | `/api/reservations` | Bu gündən sonrakı rezervlər — **admin** |
+| DELETE | `/api/reservations/{id}` | Rezervi ləğv et — **admin** |
+| GET | `/actuator/health` | Sağlamlıq yoxlaması |
 
 Rezerv nümunəsi:
 
