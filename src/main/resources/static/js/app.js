@@ -6,8 +6,18 @@
   const DICT = window.ARMUDU_I18N;
 
   /* ---------- dil ---------- */
+  // Prioritet: URL (?lang=) → localStorage → az. Dəyişəndə URL-ə də yazılır (paylaşıla bilən link).
+  function langFromUrl() {
+    try { const u = new URLSearchParams(location.search).get('lang'); if (u && DICT[u]) return u; } catch { /* keçildi */ }
+    return null;
+  }
+  function syncUrl() {
+    try { const url = new URL(location.href); url.searchParams.set('lang', lang); history.replaceState(null, '', url); } catch { /* keçildi */ }
+  }
   let lang = 'az';
-  try { const s = localStorage.getItem('armudu-lang'); if (s && DICT[s]) lang = s; } catch { /* keçildi */ }
+  const urlLang = langFromUrl();
+  if (urlLang) lang = urlLang;
+  else { try { const s = localStorage.getItem('armudu-lang'); if (s && DICT[s]) lang = s; } catch { /* keçildi */ } }
   const notePh = {
     az: 'Ad günü, nərd taxtası, xüsusi mürəbbə...',
     en: 'Birthday, a backgammon board, a special jam...',
@@ -314,6 +324,7 @@
   function setLang(next, reload) {
     lang = DICT[next] ? next : 'az';
     try { localStorage.setItem('armudu-lang', lang); } catch { /* keçildi */ }
+    syncUrl();
     applyStatic();
     fillGuests();
     hours();
@@ -325,6 +336,8 @@
     b.addEventListener('click', () => setLang(b.dataset.lang, true)));
 
   /* ---------- başlanğıc ---------- */
+  try { localStorage.setItem('armudu-lang', lang); } catch { /* keçildi */ }
+  syncUrl();
   applyStatic();
   fillGuests();
   hours();

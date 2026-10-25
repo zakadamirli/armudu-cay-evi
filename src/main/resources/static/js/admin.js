@@ -4,8 +4,18 @@
   const root = document.documentElement;
   const DICT = window.ARMUDU_I18N;
 
+  // Prioritet: URL (?lang=) → localStorage → az. Dəyişəndə URL-ə də yazılır.
+  function langFromUrl() {
+    try { const u = new URLSearchParams(location.search).get('lang'); if (u && DICT[u]) return u; } catch { /* keçildi */ }
+    return null;
+  }
+  function syncUrl() {
+    try { const url = new URL(location.href); url.searchParams.set('lang', lang); history.replaceState(null, '', url); } catch { /* keçildi */ }
+  }
   let lang = 'az';
-  try { const s = localStorage.getItem('armudu-lang'); if (s && DICT[s]) lang = s; } catch { /* keçildi */ }
+  const urlLang = langFromUrl();
+  if (urlLang) lang = urlLang;
+  else { try { const s = localStorage.getItem('armudu-lang'); if (s && DICT[s]) lang = s; } catch { /* keçildi */ } }
   function t(key, params) {
     let s = (DICT[lang] && DICT[lang][key]) ?? (DICT.az[key] ?? key);
     if (params) for (const k in params) s = s.replaceAll('{' + k + '}', params[k]);
@@ -95,9 +105,12 @@
   document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => {
     lang = DICT[b.dataset.lang] ? b.dataset.lang : 'az';
     try { localStorage.setItem('armudu-lang', lang); } catch { /* keçildi */ }
+    syncUrl();
     applyStatic();
     if (auth) load(); // açıq sessiyada siyahını yeni dildə yenilə
   }));
 
+  try { localStorage.setItem('armudu-lang', lang); } catch { /* keçildi */ }
+  syncUrl();
   applyStatic();
 })();
