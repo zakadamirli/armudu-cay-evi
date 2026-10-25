@@ -1,4 +1,4 @@
-package demo.wehare.project.menu;
+package az.armudu.cayevi.menu;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

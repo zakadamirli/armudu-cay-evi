@@ -1,4 +1,4 @@
-package demo.wehare.project;
+package az.armudu.cayevi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-public class ProjectApplication {
+public class ArmuduApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ProjectApplication.class, args);
+        SpringApplication.run(ArmuduApplication.class, args);
     }
 
 }

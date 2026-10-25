@@ -1,4 +1,4 @@
-package demo.wehare.project;
+package az.armudu.cayevi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "armudu.slot-capacity=10"
 })
 @AutoConfigureMockMvc
-class ProjectApplicationTests {
+class ArmuduApplicationTests {
 
     @Autowired
     MockMvc mvc;

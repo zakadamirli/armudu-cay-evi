@@ -1,4 +1,4 @@
-package demo.wehare.project.reservation;
+package az.armudu.cayevi.reservation;
 
 import jakarta.validation.constraints.*;
 

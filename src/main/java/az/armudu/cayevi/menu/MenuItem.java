@@ -1,4 +1,4 @@
-package demo.wehare.project.menu;
+package az.armudu.cayevi.menu;
 
 import jakarta.persistence.*;
 

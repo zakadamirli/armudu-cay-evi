@@ -1,6 +1,6 @@
-package demo.wehare.project.web;
+package az.armudu.cayevi.web;
 
-import demo.wehare.project.reservation.ReservationException;
+import az.armudu.cayevi.reservation.ReservationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;

@@ -12,33 +12,38 @@
 
   /* ---------- buxar ---------- */
   const cv = $('steam');
+  const glass = document.querySelector('.glass-stage svg');
   const ctx = cv.getContext('2d');
-  let W = 0, H = 0, parts = [];
+  // rimX/rimY/rimW: stəkanın ağzı (SVG viewBox-da y=30, eni 124/200), buxar oradan qalxır
+  let W = 0, H = 0, rimX = 0, rimY = 0, rimW = 0, parts = [];
   function size() {
-    const r = cv.getBoundingClientRect(), d = devicePixelRatio || 1;
+    const r = cv.getBoundingClientRect(), g = glass.getBoundingClientRect(), d = devicePixelRatio || 1;
     W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0);
+    rimX = g.left - r.left + g.width / 2;
+    rimY = g.top - r.top + g.height * 30 / 260;
+    rimW = g.width * 124 / 200;
   }
   size(); addEventListener('resize', size);
   const steamColor = () => getComputedStyle(document.documentElement).getPropertyValue('--steam').trim();
   function spawn() {
-    parts.push({ x: W / 2 + (Math.random() - .5) * W * .3, y: H * .22, r: 6 + Math.random() * 10, life: 0, max: 160 + Math.random() * 80, ph: Math.random() * 6.28, sp: .35 + Math.random() * .35 });
+    parts.push({ x: rimX + (Math.random() - .5) * rimW * .7, y: rimY - 4, r: 3 + Math.random() * 5, life: 0, max: 140 + Math.random() * 80, ph: Math.random() * 6.28, sp: .3 + Math.random() * .3 });
   }
-  function step(p) { p.life++; p.y -= p.sp; p.x += Math.sin(p.ph + p.life / 28) * .45; p.r += .07; }
+  function step(p) { p.life++; p.y -= p.sp; p.x += Math.sin(p.ph + p.life / 28) * .45; p.r += .09; }
   function tick() {
     ctx.clearRect(0, 0, W, H);
-    if (parts.length < 40 && Math.random() < .35) spawn();
+    if (parts.length < 30 && Math.random() < .3) spawn();
     const c = steamColor();
     parts = parts.filter(p => p.life < p.max);
     for (const p of parts) {
       step(p);
-      ctx.globalAlpha = Math.sin(Math.PI * p.life / p.max); ctx.fillStyle = c;
+      ctx.globalAlpha = .55 * Math.sin(Math.PI * p.life / p.max); ctx.fillStyle = c;
       ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.fill();
     }
     ctx.globalAlpha = 1;
     requestAnimationFrame(tick);
   }
   if (!reduce) {
-    for (let i = 0; i < 160; i++) { if (Math.random() < .35) spawn(); parts.forEach(step); }
+    for (let i = 0; i < 160; i++) { if (parts.length < 30 && Math.random() < .3) spawn(); parts.forEach(step); parts = parts.filter(p => p.life < p.max); }
     tick();
   }
 

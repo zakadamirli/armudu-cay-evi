@@ -23,6 +23,22 @@ Sonra brauzerdə http://localhost:8080 ünvanını açın.
 
 Baza `data/armudu.mv.db` faylında saxlanılır və git-ə düşmür. Tətbiq ilk dəfə işə düşəndə menyu və mürəbbələr avtomatik yazılır. Bazanı sıfırlamaq üçün `data/` qovluğunu silin.
 
+## Serverə çıxarmaq
+
+```bash
+./gradlew bootJar
+java -jar build/libs/armudu-cay-evi-1.0.0.jar
+```
+
+Konfiqurasiya mühit dəyişənləri ilə verilir:
+
+| Dəyişən | Standart | Nə üçün |
+|---|---|---|
+| `PORT` | `8080` | HTTP portu |
+| `DB_URL` | `jdbc:h2:file:./data/armudu` | Baza ünvanı |
+| `DB_USERNAME` | `sa` | Baza istifadəçisi |
+| `DB_PASSWORD` | boş | Baza parolu |
+
 ## Testlər
 
 ```bash
@@ -69,7 +85,7 @@ armudu.max-days-ahead=60
 ## Qovluq quruluşu
 
 ```
-src/main/java/demo/wehare/project/
+src/main/java/az/armudu/cayevi/
   menu/          menyu entity, repository, controller
   jam/           mürəbbə rəfi
   reservation/   rezerv: entity, qaydalar (service), controller

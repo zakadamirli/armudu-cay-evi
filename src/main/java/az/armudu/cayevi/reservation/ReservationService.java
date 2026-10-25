@@ -1,4 +1,4 @@
-package demo.wehare.project.reservation;
+package az.armudu.cayevi.reservation;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

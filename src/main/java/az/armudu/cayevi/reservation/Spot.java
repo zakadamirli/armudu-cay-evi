@@ -1,4 +1,4 @@
-package demo.wehare.project.reservation;
+package az.armudu.cayevi.reservation;
 
 public enum Spot {
     HEYET("Həyətdə, tut ağacının altında"),

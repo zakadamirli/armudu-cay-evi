@@ -1,10 +1,10 @@
-package demo.wehare.project;
+package az.armudu.cayevi;
 
-import demo.wehare.project.jam.Jam;
-import demo.wehare.project.jam.JamRepository;
-import demo.wehare.project.menu.Category;
-import demo.wehare.project.menu.MenuItem;
-import demo.wehare.project.menu.MenuItemRepository;
+import az.armudu.cayevi.jam.Jam;
+import az.armudu.cayevi.jam.JamRepository;
+import az.armudu.cayevi.menu.Category;
+import az.armudu.cayevi.menu.MenuItem;
+import az.armudu.cayevi.menu.MenuItemRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

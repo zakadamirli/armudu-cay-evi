@@ -1,4 +1,4 @@
-package demo.wehare.project.jam;
+package az.armudu.cayevi.jam;
 
 import jakarta.persistence.*;
 
